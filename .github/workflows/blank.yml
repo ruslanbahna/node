@@ -51,10 +51,10 @@ jobs:
           echo "  }" >> performance-test.js
           echo "  return result;" >> performance-test.js
           echo "}" >> performance-test.js
-          echo "function runTests() {" >> performance-test.js
-          echo "  suite.add('Fibonacci Function', function() {" >> performance-test.js
+          echo "function runSyncTests() {" >> performance-test.js
+          echo "  suite.add('Synchronous Fibonacci', function() {" >> performance-test.js
           echo "    fibonacci(30);" >> performance-test.js
-          echo "  }).add('Factorial Function', function() {" >> performance-test.js
+          echo "  }).add('Synchronous Factorial', function() {" >> performance-test.js
           echo "    factorial(15);" >> performance-test.js
           echo "  })" >> performance-test.js
           echo "    .on('cycle', function(event) {" >> performance-test.js
@@ -63,24 +63,39 @@ jobs:
           echo "    .on('complete', function() {" >> performance-test.js
           echo "      console.log('Fastest is ' + this.filter('fastest').map('name'));" >> performance-test.js
           echo "    })" >> performance-test.js
-          echo "    .run({ 'async': true });" >> performance-test.js
+          echo "    .run();" >> performance-test.js
           echo "}" >> performance-test.js
-          echo "function generateRandomNumber() {" >> performance-test.js
-          echo "  return Math.floor(Math.random() * 100);" >> performance-test.js
+          echo "function performAsyncTask(callback) {" >> performance-test.js
+          echo "  setTimeout(function() {" >> performance-test.js
+          echo "    callback();" >> performance-test.js
+          echo "  }, 1000);" >> performance-test.js
           echo "}" >> performance-test.js
-          echo "function performComplexCalculation() {" >> performance-test.js
-          echo "  let result = 0;" >> performance-test.js
-          echo "  for (let i = 0; i < 10000; i++) {" >> performance-test.js
-          echo "    result += generateRandomNumber();" >> performance-test.js
-          echo "  }" >> performance-test.js
-          echo "  return result;" >> performance-test.js
+          echo "function runAsyncTests() {" >> performance-test.js
+          echo "  suite.add('Asynchronous Task 1', function(deferred) {" >> performance-test.js
+          echo "    performAsyncTask(function() {" >> performance-test.js
+          echo "      deferred.resolve();" >> performance-test.js
+          echo "    });" >> performance-test.js
+          echo "  }, { defer: true })" >> performance-test.js
+          echo "    .add('Asynchronous Task 2', function(deferred) {" >> performance-test.js
+          echo "      performAsyncTask(function() {" >> performance-test.js
+          echo "        deferred.resolve();" >> performance-test.js
+          echo "      });" >> performance-test.js
+          echo "    }, { defer: true })" >> performance-test.js
+          echo "    .on('cycle', function(event) {" >> performance-test.js
+          echo "      console.log(String(event.target));" >> performance-test.js
+          echo "    })" >> performance-test.js
+          echo "    .on('complete', function() {" >> performance-test.js
+          echo "      console.log('Fastest is ' + this.filter('fastest').map('name'));" >> performance-test.js
+          echo "    })" >> performance-test.js
+          echo "    .run({ async: true });" >> performance-test.js
           echo "}" >> performance-test.js
           echo "function runComplexTests() {" >> performance-test.js
           echo "  for (let i = 0; i < 5; i++) {" >> performance-test.js
-          echo "    performComplexCalculation();" >> performance-test.js
+          echo "    performAsyncTask(function() {});" >> performance-test.js
           echo "  }" >> performance-test.js
           echo "}" >> performance-test.js
-          echo "runTests();" >> performance-test.js
+          echo "runSyncTests();" >> performance-test.js
+          echo "runAsyncTests();" >> performance-test.js
           echo "runComplexTests();" >> performance-test.js
           node performance-test.js
 
@@ -114,10 +129,10 @@ jobs:
           echo "  }" >> performance-test.js
           echo "  return result;" >> performance-test.js
           echo "}" >> performance-test.js
-          echo "function runTests() {" >> performance-test.js
-          echo "  suite.add('Fibonacci Function', function() {" >> performance-test.js
+          echo "function runSyncTests() {" >> performance-test.js
+          echo "  suite.add('Synchronous Fibonacci', function() {" >> performance-test.js
           echo "    fibonacci(30);" >> performance-test.js
-          echo "  }).add('Factorial Function', function() {" >> performance-test.js
+          echo "  }).add('Synchronous Factorial', function() {" >> performance-test.js
           echo "    factorial(15);" >> performance-test.js
           echo "  })" >> performance-test.js
           echo "    .on('cycle', function(event) {" >> performance-test.js
@@ -126,24 +141,39 @@ jobs:
           echo "    .on('complete', function() {" >> performance-test.js
           echo "      console.log('Fastest is ' + this.filter('fastest').map('name'));" >> performance-test.js
           echo "    })" >> performance-test.js
-          echo "    .run({ 'async': true });" >> performance-test.js
+          echo "    .run();" >> performance-test.js
           echo "}" >> performance-test.js
-          echo "function generateRandomNumber() {" >> performance-test.js
-          echo "  return Math.floor(Math.random() * 100);" >> performance-test.js
+          echo "function performAsyncTask(callback) {" >> performance-test.js
+          echo "  setTimeout(function() {" >> performance-test.js
+          echo "    callback();" >> performance-test.js
+          echo "  }, 1000);" >> performance-test.js
           echo "}" >> performance-test.js
-          echo "function performComplexCalculation() {" >> performance-test.js
-          echo "  let result = 0;" >> performance-test.js
-          echo "  for (let i = 0; i < 10000; i++) {" >> performance-test.js
-          echo "    result += generateRandomNumber();" >> performance-test.js
-          echo "  }" >> performance-test.js
-          echo "  return result;" >> performance-test.js
+          echo "function runAsyncTests() {" >> performance-test.js
+          echo "  suite.add('Asynchronous Task 1', function(deferred) {" >> performance-test.js
+          echo "    performAsyncTask(function() {" >> performance-test.js
+          echo "      deferred.resolve();" >> performance-test.js
+          echo "    });" >> performance-test.js
+          echo "  }, { defer: true })" >> performance-test.js
+          echo "    .add('Asynchronous Task 2', function(deferred) {" >> performance-test.js
+          echo "      performAsyncTask(function() {" >> performance-test.js
+          echo "        deferred.resolve();" >> performance-test.js
+          echo "      });" >> performance-test.js
+          echo "    }, { defer: true })" >> performance-test.js
+          echo "    .on('cycle', function(event) {" >> performance-test.js
+          echo "      console.log(String(event.target));" >> performance-test.js
+          echo "    })" >> performance-test.js
+          echo "    .on('complete', function() {" >> performance-test.js
+          echo "      console.log('Fastest is ' + this.filter('fastest').map('name'));" >> performance-test.js
+          echo "    })" >> performance-test.js
+          echo "    .run({ async: true });" >> performance-test.js
           echo "}" >> performance-test.js
           echo "function runComplexTests() {" >> performance-test.js
           echo "  for (let i = 0; i < 5; i++) {" >> performance-test.js
-          echo "    performComplexCalculation();" >> performance-test.js
+          echo "    performAsyncTask(function() {});" >> performance-test.js
           echo "  }" >> performance-test.js
           echo "}" >> performance-test.js
-          echo "runTests();" >> performance-test.js
+          echo "runSyncTests();" >> performance-test.js
+          echo "runAsyncTests();" >> performance-test.js
           echo "runComplexTests();" >> performance-test.js
           node performance-test.js
   node-performance-alpine:
@@ -175,10 +205,10 @@ jobs:
           echo "  }" >> performance-test.js
           echo "  return result;" >> performance-test.js
           echo "}" >> performance-test.js
-          echo "function runTests() {" >> performance-test.js
-          echo "  suite.add('Fibonacci Function', function() {" >> performance-test.js
+          echo "function runSyncTests() {" >> performance-test.js
+          echo "  suite.add('Synchronous Fibonacci', function() {" >> performance-test.js
           echo "    fibonacci(30);" >> performance-test.js
-          echo "  }).add('Factorial Function', function() {" >> performance-test.js
+          echo "  }).add('Synchronous Factorial', function() {" >> performance-test.js
           echo "    factorial(15);" >> performance-test.js
           echo "  })" >> performance-test.js
           echo "    .on('cycle', function(event) {" >> performance-test.js
@@ -187,24 +217,39 @@ jobs:
           echo "    .on('complete', function() {" >> performance-test.js
           echo "      console.log('Fastest is ' + this.filter('fastest').map('name'));" >> performance-test.js
           echo "    })" >> performance-test.js
-          echo "    .run({ 'async': true });" >> performance-test.js
+          echo "    .run();" >> performance-test.js
           echo "}" >> performance-test.js
-          echo "function generateRandomNumber() {" >> performance-test.js
-          echo "  return Math.floor(Math.random() * 100);" >> performance-test.js
+          echo "function performAsyncTask(callback) {" >> performance-test.js
+          echo "  setTimeout(function() {" >> performance-test.js
+          echo "    callback();" >> performance-test.js
+          echo "  }, 1000);" >> performance-test.js
           echo "}" >> performance-test.js
-          echo "function performComplexCalculation() {" >> performance-test.js
-          echo "  let result = 0;" >> performance-test.js
-          echo "  for (let i = 0; i < 10000; i++) {" >> performance-test.js
-          echo "    result += generateRandomNumber();" >> performance-test.js
-          echo "  }" >> performance-test.js
-          echo "  return result;" >> performance-test.js
+          echo "function runAsyncTests() {" >> performance-test.js
+          echo "  suite.add('Asynchronous Task 1', function(deferred) {" >> performance-test.js
+          echo "    performAsyncTask(function() {" >> performance-test.js
+          echo "      deferred.resolve();" >> performance-test.js
+          echo "    });" >> performance-test.js
+          echo "  }, { defer: true })" >> performance-test.js
+          echo "    .add('Asynchronous Task 2', function(deferred) {" >> performance-test.js
+          echo "      performAsyncTask(function() {" >> performance-test.js
+          echo "        deferred.resolve();" >> performance-test.js
+          echo "      });" >> performance-test.js
+          echo "    }, { defer: true })" >> performance-test.js
+          echo "    .on('cycle', function(event) {" >> performance-test.js
+          echo "      console.log(String(event.target));" >> performance-test.js
+          echo "    })" >> performance-test.js
+          echo "    .on('complete', function() {" >> performance-test.js
+          echo "      console.log('Fastest is ' + this.filter('fastest').map('name'));" >> performance-test.js
+          echo "    })" >> performance-test.js
+          echo "    .run({ async: true });" >> performance-test.js
           echo "}" >> performance-test.js
           echo "function runComplexTests() {" >> performance-test.js
           echo "  for (let i = 0; i < 5; i++) {" >> performance-test.js
-          echo "    performComplexCalculation();" >> performance-test.js
+          echo "    performAsyncTask(function() {});" >> performance-test.js
           echo "  }" >> performance-test.js
           echo "}" >> performance-test.js
-          echo "runTests();" >> performance-test.js
+          echo "runSyncTests();" >> performance-test.js
+          echo "runAsyncTests();" >> performance-test.js
           echo "runComplexTests();" >> performance-test.js
           node performance-test.js
 
