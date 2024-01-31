@@ -64,8 +64,6 @@ jobs:
           echo "    .add('Synchronous Factorial', () => factorial(10))" >> performance-test.js
           echo "    .on('cycle', (event) => console.log(String(event.target)))" >> performance-test.js
           echo "    .on('complete', () => {" >> performance-test.js
-          echo "      const startTime = new Date().getTime();" >> performance-test.js
-          echo "      while (new Date().getTime() - startTime < 20000) { /* Complex task here */ }" >> performance-test.js
           echo "      const endTime = new Date().getTime();" >> performance-test.js
           echo "      console.log('Total execution time for Sync tests: ' + (endTime - startTime) + ' ms');" >> performance-test.js
           echo "    })" >> performance-test.js
@@ -75,13 +73,12 @@ jobs:
           echo "  suite.add('Asynchronous Task', (deferred) => performAsyncTask(() => deferred.resolve()), { defer: true })" >> performance-test.js
           echo "    .on('cycle', (event) => console.log(String(event.target)))" >> performance-test.js
           echo "    .on('complete', () => {" >> performance-test.js
-          echo "      const startTime = new Date().getTime();" >> performance-test.js
-          echo "      while (new Date().getTime() - startTime < 20000) { /* Complex task here */ }" >> performance-test.js
           echo "      const endTime = new Date().getTime();" >> performance-test.js
           echo "      console.log('Total execution time for Async tests: ' + (endTime - startTime) + ' ms');" >> performance-test.js
           echo "    })" >> performance-test.js
           echo "    .run({ async: true });" >> performance-test.js
           echo "}" >> performance-test.js
+          echo "const startTime = new Date().getTime();" >> performance-test.js
           echo "runSyncTests();" >> performance-test.js
           echo "runAsyncTests();" >> performance-test.js
           node performance-test.js
@@ -129,8 +126,6 @@ jobs:
           echo "    .add('Synchronous Factorial', () => factorial(10))" >> performance-test.js
           echo "    .on('cycle', (event) => console.log(String(event.target)))" >> performance-test.js
           echo "    .on('complete', () => {" >> performance-test.js
-          echo "      const startTime = new Date().getTime();" >> performance-test.js
-          echo "      while (new Date().getTime() - startTime < 20000) { /* Complex task here */ }" >> performance-test.js
           echo "      const endTime = new Date().getTime();" >> performance-test.js
           echo "      console.log('Total execution time for Sync tests: ' + (endTime - startTime) + ' ms');" >> performance-test.js
           echo "    })" >> performance-test.js
@@ -140,13 +135,12 @@ jobs:
           echo "  suite.add('Asynchronous Task', (deferred) => performAsyncTask(() => deferred.resolve()), { defer: true })" >> performance-test.js
           echo "    .on('cycle', (event) => console.log(String(event.target)))" >> performance-test.js
           echo "    .on('complete', () => {" >> performance-test.js
-          echo "      const startTime = new Date().getTime();" >> performance-test.js
-          echo "      while (new Date().getTime() - startTime < 20000) { /* Complex task here */ }" >> performance-test.js
           echo "      const endTime = new Date().getTime();" >> performance-test.js
           echo "      console.log('Total execution time for Async tests: ' + (endTime - startTime) + ' ms');" >> performance-test.js
           echo "    })" >> performance-test.js
           echo "    .run({ async: true });" >> performance-test.js
           echo "}" >> performance-test.js
+          echo "const startTime = new Date().getTime();" >> performance-test.js
           echo "runSyncTests();" >> performance-test.js
           echo "runAsyncTests();" >> performance-test.js
           node performance-test.js
@@ -192,8 +186,6 @@ jobs:
           echo "    .add('Synchronous Factorial', () => factorial(10))" >> performance-test.js
           echo "    .on('cycle', (event) => console.log(String(event.target)))" >> performance-test.js
           echo "    .on('complete', () => {" >> performance-test.js
-          echo "      const startTime = new Date().getTime();" >> performance-test.js
-          echo "      while (new Date().getTime() - startTime < 20000) { /* Complex task here */ }" >> performance-test.js
           echo "      const endTime = new Date().getTime();" >> performance-test.js
           echo "      console.log('Total execution time for Sync tests: ' + (endTime - startTime) + ' ms');" >> performance-test.js
           echo "    })" >> performance-test.js
@@ -203,17 +195,15 @@ jobs:
           echo "  suite.add('Asynchronous Task', (deferred) => performAsyncTask(() => deferred.resolve()), { defer: true })" >> performance-test.js
           echo "    .on('cycle', (event) => console.log(String(event.target)))" >> performance-test.js
           echo "    .on('complete', () => {" >> performance-test.js
-          echo "      const startTime = new Date().getTime();" >> performance-test.js
-          echo "      while (new Date().getTime() - startTime < 20000) { /* Complex task here */ }" >> performance-test.js
           echo "      const endTime = new Date().getTime();" >> performance-test.js
           echo "      console.log('Total execution time for Async tests: ' + (endTime - startTime) + ' ms');" >> performance-test.js
           echo "    })" >> performance-test.js
           echo "    .run({ async: true });" >> performance-test.js
           echo "}" >> performance-test.js
+          echo "const startTime = new Date().getTime();" >> performance-test.js
           echo "runSyncTests();" >> performance-test.js
           echo "runAsyncTests();" >> performance-test.js
           node performance-test.js
-
 
 
 
