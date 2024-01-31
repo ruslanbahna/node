@@ -10,7 +10,7 @@ jobs:
   python-performance-test:
     runs-on: ubuntu-latest
     container:
-      image: buntu:latest
+      image: ubuntu:latest
 
     steps:
     - name: Install Python and Pip
