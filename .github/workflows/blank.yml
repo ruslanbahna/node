@@ -74,7 +74,8 @@ jobs:
       - name: Install Node.js and NPM
         run: |
           tdnf update -y
-          tdnf install -y nodejs npm
+          tdnf install -y nodejs
+          npm --version
 
       - name: Install Benchmark.js
         run: npm install benchmark
