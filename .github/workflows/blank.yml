@@ -59,6 +59,11 @@ jobs:
           echo "    .on('cycle', function(event) {" >> performance-test.js
           echo "      console.log(String(event.target));" >> performance-test.js
           echo "    })" >> performance-test.js
+          echo "    .on('complete', function() {" >> performance-test.js
+          echo "      console.log('Fastest is ' + this.filter('fastest').map('name'));" >> performance-test.js
+          echo "      const endTime = new Date().getTime();" >> performance-test.js
+          echo "      console.log('Total execution time: ' + (endTime - startTime) + ' ms');" >> performance-test.js
+          echo "    })" >> performance-test.js
           echo "    .run();" >> performance-test.js
           echo "}" >> performance-test.js
           echo "function runAsyncTests() {" >> performance-test.js
@@ -75,8 +80,6 @@ jobs:
           echo "const startTime = new Date().getTime();" >> performance-test.js
           echo "runSyncTests();" >> performance-test.js
           echo "runAsyncTests();" >> performance-test.js
-          echo "const endTime = new Date().getTime();" >> performance-test.js
-          echo "console.log('Total execution time: ' + (endTime - startTime) + ' ms');" >> performance-test.js
           node performance-test.js
 
   node-performance-photon:
@@ -117,6 +120,11 @@ jobs:
           echo "    .on('cycle', function(event) {" >> performance-test.js
           echo "      console.log(String(event.target));" >> performance-test.js
           echo "    })" >> performance-test.js
+          echo "    .on('complete', function() {" >> performance-test.js
+          echo "      console.log('Fastest is ' + this.filter('fastest').map('name'));" >> performance-test.js
+          echo "      const endTime = new Date().getTime();" >> performance-test.js
+          echo "      console.log('Total execution time: ' + (endTime - startTime) + ' ms');" >> performance-test.js
+          echo "    })" >> performance-test.js
           echo "    .run();" >> performance-test.js
           echo "}" >> performance-test.js
           echo "function runAsyncTests() {" >> performance-test.js
@@ -133,10 +141,7 @@ jobs:
           echo "const startTime = new Date().getTime();" >> performance-test.js
           echo "runSyncTests();" >> performance-test.js
           echo "runAsyncTests();" >> performance-test.js
-          echo "const endTime = new Date().getTime();" >> performance-test.js
-          echo "console.log('Total execution time: ' + (endTime - startTime) + ' ms');" >> performance-test.js
           node performance-test.js
-
   node-performance-alpine:
     runs-on: ubuntu-latest
     container:
@@ -174,6 +179,11 @@ jobs:
           echo "    .on('cycle', function(event) {" >> performance-test.js
           echo "      console.log(String(event.target));" >> performance-test.js
           echo "    })" >> performance-test.js
+          echo "    .on('complete', function() {" >> performance-test.js
+          echo "      console.log('Fastest is ' + this.filter('fastest').map('name'));" >> performance-test.js
+          echo "      const endTime = new Date().getTime();" >> performance-test.js
+          echo "      console.log('Total execution time: ' + (endTime - startTime) + ' ms');" >> performance-test.js
+          echo "    })" >> performance-test.js
           echo "    .run();" >> performance-test.js
           echo "}" >> performance-test.js
           echo "function runAsyncTests() {" >> performance-test.js
@@ -190,8 +200,6 @@ jobs:
           echo "const startTime = new Date().getTime();" >> performance-test.js
           echo "runSyncTests();" >> performance-test.js
           echo "runAsyncTests();" >> performance-test.js
-          echo "const endTime = new Date().getTime();" >> performance-test.js
-          echo "console.log('Total execution time: ' + (endTime - startTime) + ' ms');" >> performance-test.js
           node performance-test.js
 
 
