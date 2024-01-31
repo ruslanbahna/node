@@ -42,19 +42,26 @@ jobs:
           echo "const suite = new Benchmark.Suite();" >> performance-test.js
           echo "function fibonacci(n) {" >> performance-test.js
           echo "  if (n <= 1) return n;" >> performance-test.js
-          echo "  return fibonacci(n - 1) + fibonacci(n - 2);" >> performance-test.js
+          echo "  let result = 0;" >> performance-test.js
+          echo "  for (let i = 0; i < 1000; i++) {" >> performance-test.js
+          echo "    result += fibonacci(n - 1) + fibonacci(n - 2);" >> performance-test.js
+          echo "  }" >> performance-test.js
+          echo "  return result / 1000;" >> performance-test.js
           echo "}" >> performance-test.js
           echo "function factorial(n) {" >> performance-test.js
           echo "  let result = 1;" >> performance-test.js
           echo "  for (let i = 1; i <= n; i++) {" >> performance-test.js
           echo "    result *= i;" >> performance-test.js
+          echo "    for (let j = 0; j < 10000; j++) {" >> performance-test.js
+          echo "      result += j - j;" >> performance-test.js
+          echo "    }" >> performance-test.js
           echo "  }" >> performance-test.js
           echo "  return result;" >> performance-test.js
           echo "}" >> performance-test.js
           echo "suite.add('Fibonacci Function', function() {" >> performance-test.js
           echo "  fibonacci(20);" >> performance-test.js
           echo "}).add('Factorial Function', function() {" >> performance-test.js
-          echo "  factorial(10);" >> performance-test.js
+          echo "  factorial(20);" >> performance-test.js  # Increased input size for factorial
           echo "})" >> performance-test.js
           echo ".on('cycle', function(event) {" >> performance-test.js
           echo "  console.log(String(event.target));" >> performance-test.js
@@ -64,6 +71,7 @@ jobs:
           echo "})" >> performance-test.js
           echo ".run({ 'async': true });" >> performance-test.js
           node performance-test.js
+
 
       
 
