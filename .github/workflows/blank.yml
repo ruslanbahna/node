@@ -2,8 +2,8 @@ name: python-performance-test
 
 on:
   push:
-    paths:
-      - 'github/workflows/blank.yml'
+    branches:
+      - '*'
   workflow_dispatch:
     
 jobs:
