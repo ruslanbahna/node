@@ -73,6 +73,8 @@ jobs:
           echo "function runComplexTests() {" >> performance-test.js
           echo "  const startTime = new Date().getTime();" >> performance-test.js
           echo "  while (new Date().getTime() - startTime < 20000) { /* Complex task here */ }" >> performance-test.js
+          echo "  const endTime = new Date().getTime();" >> performance-test.js
+          echo "  console.log('Total execution time: ' + (endTime - startTime) + ' ms');" >> performance-test.js
           echo "}" >> performance-test.js
           echo "runSyncTests();" >> performance-test.js
           echo "runAsyncTests();" >> performance-test.js
@@ -131,6 +133,8 @@ jobs:
           echo "function runComplexTests() {" >> performance-test.js
           echo "  const startTime = new Date().getTime();" >> performance-test.js
           echo "  while (new Date().getTime() - startTime < 20000) { /* Complex task here */ }" >> performance-test.js
+          echo "  const endTime = new Date().getTime();" >> performance-test.js
+          echo "  console.log('Total execution time: ' + (endTime - startTime) + ' ms');" >> performance-test.js
           echo "}" >> performance-test.js
           echo "runSyncTests();" >> performance-test.js
           echo "runAsyncTests();" >> performance-test.js
@@ -187,6 +191,8 @@ jobs:
           echo "function runComplexTests() {" >> performance-test.js
           echo "  const startTime = new Date().getTime();" >> performance-test.js
           echo "  while (new Date().getTime() - startTime < 20000) { /* Complex task here */ }" >> performance-test.js
+          echo "  const endTime = new Date().getTime();" >> performance-test.js
+          echo "  console.log('Total execution time: ' + (endTime - startTime) + ' ms');" >> performance-test.js
           echo "}" >> performance-test.js
           echo "runSyncTests();" >> performance-test.js
           echo "runAsyncTests();" >> performance-test.js
