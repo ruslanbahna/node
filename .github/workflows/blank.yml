@@ -22,48 +22,48 @@ jobs:
     - name: Run PyPerformance
       run: pyperformance run --affinity=1 --benchmarks=deepcopy
 
-node-performance-test:
-  runs-on: ubuntu-latest
-  container:
-    image: ubuntu:latest
+  node-performance-test:
+    runs-on: ubuntu-latest
+    container:
+      image: ubuntu:latest
 
-  steps:
-    - name: Install Node.js and NPM
-      run: |
-        apt-get update
-        apt-get install -y nodejs npm
+    steps:
+      - name: Install Node.js and NPM
+        run: |
+          apt-get update
+          apt-get install -y nodejs npm
 
-    - name: Install Benchmark.js
-      run: npm install benchmark
+      - name: Install Benchmark.js
+        run: npm install benchmark
 
-    - name: Run Node Performance Test
-      run: |
-        echo "const Benchmark = require('benchmark');" > performance-test.js
-        echo "const suite = new Benchmark.Suite();" >> performance-test.js
-        echo "function fibonacci(n) {" >> performance-test.js
-        echo "  if (n <= 1) return n;" >> performance-test.js
-        echo "  return fibonacci(n - 1) + fibonacci(n - 2);" >> performance-test.js
-        echo "}" >> performance-test.js
-        echo "function factorial(n) {" >> performance-test.js
-        echo "  let result = 1;" >> performance-test.js
-        echo "  for (let i = 1; i <= n; i++) {" >> performance-test.js
-        echo "    result *= i;" >> performance-test.js
-        echo "  }" >> performance-test.js
-        echo "  return result;" >> performance-test.js
-        echo "}" >> performance-test.js
-        echo "suite.add('Fibonacci Function', function() {" >> performance-test.js
-        echo "  fibonacci(20);" >> performance-test.js
-        echo "}).add('Factorial Function', function() {" >> performance-test.js
-        echo "  factorial(10);" >> performance-test.js
-        echo "})" >> performance-test.js
-        echo ".on('cycle', function(event) {" >> performance-test.js
-        echo "  console.log(String(event.target));" >> performance-test.js
-        echo "})" >> performance-test.js
-        echo ".on('complete', function() {" >> performance-test.js
-        echo "  console.log('Fastest is ' + this.filter('fastest').map('name'));" >> performance-test.js
-        echo "})" >> performance-test.js
-        echo ".run({ 'async': true });" >> performance-test.js
-        node performance-test.js
+      - name: Run Node Performance Test
+        run: |
+          echo "const Benchmark = require('benchmark');" > performance-test.js
+          echo "const suite = new Benchmark.Suite();" >> performance-test.js
+          echo "function fibonacci(n) {" >> performance-test.js
+          echo "  if (n <= 1) return n;" >> performance-test.js
+          echo "  return fibonacci(n - 1) + fibonacci(n - 2);" >> performance-test.js
+          echo "}" >> performance-test.js
+          echo "function factorial(n) {" >> performance-test.js
+          echo "  let result = 1;" >> performance-test.js
+          echo "  for (let i = 1; i <= n; i++) {" >> performance-test.js
+          echo "    result *= i;" >> performance-test.js
+          echo "  }" >> performance-test.js
+          echo "  return result;" >> performance-test.js
+          echo "}" >> performance-test.js
+          echo "suite.add('Fibonacci Function', function() {" >> performance-test.js
+          echo "  fibonacci(20);" >> performance-test.js
+          echo "}).add('Factorial Function', function() {" >> performance-test.js
+          echo "  factorial(10);" >> performance-test.js
+          echo "})" >> performance-test.js
+          echo ".on('cycle', function(event) {" >> performance-test.js
+          echo "  console.log(String(event.target));" >> performance-test.js
+          echo "})" >> performance-test.js
+          echo ".on('complete', function() {" >> performance-test.js
+          echo "  console.log('Fastest is ' + this.filter('fastest').map('name'));" >> performance-test.js
+          echo "})" >> performance-test.js
+          echo ".run({ 'async': true });" >> performance-test.js
+          node performance-test.js
 
       
 
