@@ -21,5 +21,35 @@ jobs:
       run: python3 -m pip install pyperformance
     - name: Run PyPerformance
       run: pyperformance run --affinity=1 --benchmarks=deepcopy
+
+  node-performance-test:
+    runs-on: ubuntu-latest
+    container:
+      image: ubuntu:latest
+
+    steps:
+    - name: Install Node.js and NPM
+      run: |
+        apt-get update
+        apt-get install -y nodejs npm
+
+    - name: Install Benchmark.js
+      run: npm install benchmark
+
+    - name: Run Node Performance Test
+      run: |
+        echo "const Benchmark = require('benchmark');" > performance-test.js
+        echo "const suite = new Benchmark.Suite;" >> performance-test.js
+        echo "suite.add('RegExp#test', function() {" >> performance-test.js
+        echo "  /o/.test('Hello World!');" >> performance-test.js
+        echo "})" >> performance-test.js
+        echo ".on('cycle', function(event) {" >> performance-test.js
+        echo "  console.log(String(event.target));" >> performance-test.js
+        echo "})" >> performance-test.js
+        echo ".on('complete', function() {" >> performance-test.js
+        echo "  console.log('Fastest is ' + this.filter('fastest').map('name'));" >> performance-test.js
+        echo "})" >> performance-test.js
+        echo ".run({'async': true});" >> performance-test.js
+        node performance-test.js
       
 
