@@ -51,7 +51,11 @@ jobs:
           echo "  { name: 'Set Operations 10000', task: () => { const set = new Set(); for(let i=0; i<10000; i++){ set.add(i); } return set.size; } }" >> performance-test.js
           echo "];" >> performance-test.js
           echo "tasks.forEach(({ name, task }) => suite.add(name, task));" >> performance-test.js
-          echo "suite.on('cycle', event => console.log(String(event.target)))" >> performance-test.js
+          echo "suite.on('cycle', event => {" >> performance-test.js
+          echo "  const benchmark = event.target;" >> performance-test.js
+          echo "  const stats = benchmark.stats;" >> performance-test.js
+          echo "  console.log(\`Task: \${benchmark.name}, Time Elapsed: \${stats.mean + stats.moe} sec (mean ± margin of error)\`);" >> performance-test.js
+          echo "})" >> performance-test.js
           echo "     .on('complete', function() {" >> performance-test.js
           echo "       console.log('All tasks completed. Fastest is ' + this.filter('fastest').map('name'));" >> performance-test.js
           echo "     })" >> performance-test.js
@@ -88,7 +92,11 @@ jobs:
           echo "  { name: 'Set Operations 10000', task: () => { const set = new Set(); for(let i=0; i<10000; i++){ set.add(i); } return set.size; } }" >> performance-test.js
           echo "];" >> performance-test.js
           echo "tasks.forEach(({ name, task }) => suite.add(name, task));" >> performance-test.js
-          echo "suite.on('cycle', event => console.log(String(event.target)))" >> performance-test.js
+          echo "suite.on('cycle', event => {" >> performance-test.js
+          echo "  const benchmark = event.target;" >> performance-test.js
+          echo "  const stats = benchmark.stats;" >> performance-test.js
+          echo "  console.log(\`Task: \${benchmark.name}, Time Elapsed: \${stats.mean + stats.moe} sec (mean ± margin of error)\`);" >> performance-test.js
+          echo "})" >> performance-test.js
           echo "     .on('complete', function() {" >> performance-test.js
           echo "       console.log('All tasks completed. Fastest is ' + this.filter('fastest').map('name'));" >> performance-test.js
           echo "     })" >> performance-test.js
@@ -123,7 +131,11 @@ jobs:
           echo "  { name: 'Set Operations 10000', task: () => { const set = new Set(); for(let i=0; i<10000; i++){ set.add(i); } return set.size; } }" >> performance-test.js
           echo "];" >> performance-test.js
           echo "tasks.forEach(({ name, task }) => suite.add(name, task));" >> performance-test.js
-          echo "suite.on('cycle', event => console.log(String(event.target)))" >> performance-test.js
+          echo "suite.on('cycle', event => {" >> performance-test.js
+          echo "  const benchmark = event.target;" >> performance-test.js
+          echo "  const stats = benchmark.stats;" >> performance-test.js
+          echo "  console.log(\`Task: \${benchmark.name}, Time Elapsed: \${stats.mean + stats.moe} sec (mean ± margin of error)\`);" >> performance-test.js
+          echo "})" >> performance-test.js
           echo "     .on('complete', function() {" >> performance-test.js
           echo "       console.log('All tasks completed. Fastest is ' + this.filter('fastest').map('name'));" >> performance-test.js
           echo "     })" >> performance-test.js
