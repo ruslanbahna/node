@@ -65,6 +65,8 @@ jobs:
           echo "runTests('Asynchronous Task', (deferred) => performAsyncTask(() => { deferred.resolve(); }), { defer: true });" >> performance-test.js
           echo "const endTime = new Date().getTime();" >> performance-test.js
           echo "console.log('Total execution time for all tests: ' + (endTime - startTime) + ' ms');" >> performance-test.js
+          node performance-test.js
+
 
   node-performance-photon:
     runs-on: ubuntu-latest
@@ -110,6 +112,8 @@ jobs:
           echo "runTests('Asynchronous Task', (deferred) => performAsyncTask(() => { deferred.resolve(); }), { defer: true });" >> performance-test.js
           echo "const endTime = new Date().getTime();" >> performance-test.js
           echo "console.log('Total execution time for all tests: ' + (endTime - startTime) + ' ms');" >> performance-test.js
+          node performance-test.js
+
   node-performance-alpine:
     runs-on: ubuntu-latest
     container:
@@ -153,6 +157,8 @@ jobs:
           echo "runTests('Asynchronous Task', (deferred) => performAsyncTask(() => { deferred.resolve(); }), { defer: true });" >> performance-test.js
           echo "const endTime = new Date().getTime();" >> performance-test.js
           echo "console.log('Total execution time for all tests: ' + (endTime - startTime) + ' ms');" >> performance-test.js
+          node performance-test.js
+
 
 
 
