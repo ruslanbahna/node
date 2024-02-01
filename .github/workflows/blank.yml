@@ -43,7 +43,7 @@ jobs:
           echo "const fibonacci = (n) => n <= 1 ? n : fibonacci(n - 1) + fibonacci(n - 2);" >> performance-test.js
           echo "const factorial = (n) => n === 0 ? 1 : n * factorial(n - 1);" >> performance-test.js
           echo "const performSyncTask = () => fibonacci(30);" >> performance-test.js
-          echo "const performAsyncTask = (callback) => setTimeout(callback, 1000);" >> performance-test.js
+          echo "const performAsyncTask = (callback) => setTimeout(() => { callback(); }, 1000);" >> performance-test.js
           echo "const runTests = (name, task) => {" >> performance-test.js
           echo "  suite.add(name, () => task())" >> performance-test.js
           echo "    .on('cycle', (event) => console.log(String(event.target)))" >> performance-test.js
@@ -56,7 +56,7 @@ jobs:
           echo "const startTime = new Date().getTime();" >> performance-test.js
           echo "runTests('Synchronous Fibonacci', performSyncTask);" >> performance-test.js
           echo "runTests('Synchronous Factorial', () => factorial(10));" >> performance-test.js
-          echo "runTests('Asynchronous Task', (deferred) => performAsyncTask(() => deferred.resolve()), { defer: true });" >> performance-test.js
+          echo "runTests('Asynchronous Task', (deferred) => performAsyncTask(() => { deferred.resolve(); }), { defer: true });" >> performance-test.js
           echo "const endTime = new Date().getTime();" >> performance-test.js
           echo "console.log('Total execution time for all tests: ' + (endTime - startTime) + ' ms');" >> performance-test.js
           node performance-test.js
@@ -83,7 +83,7 @@ jobs:
           echo "const fibonacci = (n) => n <= 1 ? n : fibonacci(n - 1) + fibonacci(n - 2);" >> performance-test.js
           echo "const factorial = (n) => n === 0 ? 1 : n * factorial(n - 1);" >> performance-test.js
           echo "const performSyncTask = () => fibonacci(30);" >> performance-test.js
-          echo "const performAsyncTask = (callback) => setTimeout(callback, 1000);" >> performance-test.js
+          echo "const performAsyncTask = (callback) => setTimeout(() => { callback(); }, 1000);" >> performance-test.js
           echo "const runTests = (name, task) => {" >> performance-test.js
           echo "  suite.add(name, () => task())" >> performance-test.js
           echo "    .on('cycle', (event) => console.log(String(event.target)))" >> performance-test.js
@@ -96,7 +96,7 @@ jobs:
           echo "const startTime = new Date().getTime();" >> performance-test.js
           echo "runTests('Synchronous Fibonacci', performSyncTask);" >> performance-test.js
           echo "runTests('Synchronous Factorial', () => factorial(10));" >> performance-test.js
-          echo "runTests('Asynchronous Task', (deferred) => performAsyncTask(() => deferred.resolve()), { defer: true });" >> performance-test.js
+          echo "runTests('Asynchronous Task', (deferred) => performAsyncTask(() => { deferred.resolve(); }), { defer: true });" >> performance-test.js
           echo "const endTime = new Date().getTime();" >> performance-test.js
           echo "console.log('Total execution time for all tests: ' + (endTime - startTime) + ' ms');" >> performance-test.js
           node performance-test.js
@@ -121,7 +121,7 @@ jobs:
           echo "const fibonacci = (n) => n <= 1 ? n : fibonacci(n - 1) + fibonacci(n - 2);" >> performance-test.js
           echo "const factorial = (n) => n === 0 ? 1 : n * factorial(n - 1);" >> performance-test.js
           echo "const performSyncTask = () => fibonacci(30);" >> performance-test.js
-          echo "const performAsyncTask = (callback) => setTimeout(callback, 1000);" >> performance-test.js
+          echo "const performAsyncTask = (callback) => setTimeout(() => { callback(); }, 1000);" >> performance-test.js
           echo "const runTests = (name, task) => {" >> performance-test.js
           echo "  suite.add(name, () => task())" >> performance-test.js
           echo "    .on('cycle', (event) => console.log(String(event.target)))" >> performance-test.js
@@ -134,7 +134,7 @@ jobs:
           echo "const startTime = new Date().getTime();" >> performance-test.js
           echo "runTests('Synchronous Fibonacci', performSyncTask);" >> performance-test.js
           echo "runTests('Synchronous Factorial', () => factorial(10));" >> performance-test.js
-          echo "runTests('Asynchronous Task', (deferred) => performAsyncTask(() => deferred.resolve()), { defer: true });" >> performance-test.js
+          echo "runTests('Asynchronous Task', (deferred) => performAsyncTask(() => { deferred.resolve(); }), { defer: true });" >> performance-test.js
           echo "const endTime = new Date().getTime();" >> performance-test.js
           echo "console.log('Total execution time for all tests: ' + (endTime - startTime) + ' ms');" >> performance-test.js
           node performance-test.js
