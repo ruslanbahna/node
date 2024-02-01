@@ -40,30 +40,22 @@ jobs:
         run: |
           echo "const Benchmark = require('benchmark');" > performance-test.js
           echo "const suite = new Benchmark.Suite();" >> performance-test.js
-          echo "const fibonacci = (n) => n <= 1 ? n : fibonacci(n - 1) + fibonacci(n - 2);" >> performance-test.js
-          echo "const factorial = (n) => n === 0 ? 1 : n * factorial(n - 1);" >> performance-test.js
-          echo "const performSyncTask = () => fibonacci(30);" >> performance-test.js
-          echo "const performAsyncTask = (callback) => setTimeout(callback, 1000);" >> performance-test.js
-          echo "let totalTests = 0, completedTests = 0;" >> performance-test.js
-          echo "const runTests = (name, task, options = {}) => {" >> performance-test.js
-          echo "  totalTests++;" >> performance-test.js
-          echo "  suite.add(name, function(deferred) {" >> performance-test.js
-          echo "    if (options.defer) task(deferred); else task();" >> performance-test.js
-          echo "  }, options)" >> performance-test.js
-          echo "    .on('complete', function() {" >> performance-test.js
-          echo "      completedTests++;" >> performance-test.js
-          echo "      if (completedTests === totalTests) {" >> performance-test.js
-          echo "        const endTime = new Date().getTime();" >> performance-test.js
-          echo "        console.log('Total execution time for all tests: ' + (endTime - startTime) + ' ms');" >> performance-test.js
-          echo "      }" >> performance-test.js
-          echo "    });" >> performance-test.js
-          echo "};" >> performance-test.js
-          echo "const startTime = new Date().getTime();" >> performance-test.js
-          echo "runTests('Synchronous Fibonacci', performSyncTask);" >> performance-test.js
-          echo "runTests('Synchronous Factorial', () => factorial(10));" >> performance-test.js
-          echo "runTests('Asynchronous Task', (deferred) => performAsyncTask(() => { deferred.resolve(); }), { defer: true });" >> performance-test.js
-          echo "suite.on('cycle', (event) => console.log(String(event.target))).run({ 'async': true });" >> performance-test.js
-          node performance-test.js
+          echo "const tasks = [" >> performance-test.js
+          echo "  { name: 'Fibonacci 35', task: () => { let a=0, b=1, f=1; for(let i=2; i<=35; i++){ f=a+b; a=b; b=f; } return f; } }," >> performance-test.js
+          echo "  { name: 'Factorial 12', task: () => { let f=1; for(let i=1; i<=12; i++){ f*=i; } return f; } }," >> performance-test.js
+          echo "  { name: 'Prime Check 10000019', task: () => { for(let i=2, s=Math.sqrt(10000019); i<=s; i++){ if(10000019 % i === 0) return false; } return 10000019 > 1; } }," >> performance-test.js
+          echo "  { name: 'QuickSort 10000', task: () => { const sort = arr => arr.length <= 1 ? arr : sort(arr.filter(v => v < arr[0])).concat(arr.filter(v => v === arr[0])).concat(sort(arr.filter(v => v > arr[0]))); return sort(Array.from({length: 10000}, () => Math.floor(Math.random() * 10000))); } }," >> performance-test.js
+          echo "  { name: 'Array Reduce 10000', task: () => Array.from({length: 10000}, (_, i) => i).reduce((acc, val) => acc + val, 0) }," >> performance-test.js
+          echo "  { name: 'String Concatenation 1000', task: () => { let str = ''; for(let i=0; i<1000; i++){ str += 'a'; } return str; } }," >> performance-test.js
+          echo "  { name: 'Map Operations 10000', task: () => { const map = new Map(); for(let i=0; i<10000; i++){ map.set(i, i*2); } return map.size; } }," >> performance-test.js
+          echo "  { name: 'Set Operations 10000', task: () => { const set = new Set(); for(let i=0; i<10000; i++){ set.add(i); } return set.size; } }" >> performance-test.js
+          echo "];" >> performance-test.js
+          echo "tasks.forEach(({ name, task }) => suite.add(name, task));" >> performance-test.js
+          echo "suite.on('cycle', event => console.log(String(event.target)))" >> performance-test.js
+          echo "     .on('complete', function() {" >> performance-test.js
+          echo "       console.log('All tasks completed. Fastest is ' + this.filter('fastest').map('name'));" >> performance-test.js
+          echo "     })" >> performance-test.js
+          echo "     .run({ 'async': true });" >> performance-test.js
 
 
   node-performance-photon:
@@ -85,30 +77,22 @@ jobs:
         run: |
           echo "const Benchmark = require('benchmark');" > performance-test.js
           echo "const suite = new Benchmark.Suite();" >> performance-test.js
-          echo "const fibonacci = (n) => n <= 1 ? n : fibonacci(n - 1) + fibonacci(n - 2);" >> performance-test.js
-          echo "const factorial = (n) => n === 0 ? 1 : n * factorial(n - 1);" >> performance-test.js
-          echo "const performSyncTask = () => fibonacci(30);" >> performance-test.js
-          echo "const performAsyncTask = (callback) => setTimeout(callback, 1000);" >> performance-test.js
-          echo "let totalTests = 0, completedTests = 0;" >> performance-test.js
-          echo "const runTests = (name, task, options = {}) => {" >> performance-test.js
-          echo "  totalTests++;" >> performance-test.js
-          echo "  suite.add(name, function(deferred) {" >> performance-test.js
-          echo "    if (options.defer) task(deferred); else task();" >> performance-test.js
-          echo "  }, options)" >> performance-test.js
-          echo "    .on('complete', function() {" >> performance-test.js
-          echo "      completedTests++;" >> performance-test.js
-          echo "      if (completedTests === totalTests) {" >> performance-test.js
-          echo "        const endTime = new Date().getTime();" >> performance-test.js
-          echo "        console.log('Total execution time for all tests: ' + (endTime - startTime) + ' ms');" >> performance-test.js
-          echo "      }" >> performance-test.js
-          echo "    });" >> performance-test.js
-          echo "};" >> performance-test.js
-          echo "const startTime = new Date().getTime();" >> performance-test.js
-          echo "runTests('Synchronous Fibonacci', performSyncTask);" >> performance-test.js
-          echo "runTests('Synchronous Factorial', () => factorial(10));" >> performance-test.js
-          echo "runTests('Asynchronous Task', (deferred) => performAsyncTask(() => { deferred.resolve(); }), { defer: true });" >> performance-test.js
-          echo "suite.on('cycle', (event) => console.log(String(event.target))).run({ 'async': true });" >> performance-test.js
-          node performance-test.js
+          echo "const tasks = [" >> performance-test.js
+          echo "  { name: 'Fibonacci 35', task: () => { let a=0, b=1, f=1; for(let i=2; i<=35; i++){ f=a+b; a=b; b=f; } return f; } }," >> performance-test.js
+          echo "  { name: 'Factorial 12', task: () => { let f=1; for(let i=1; i<=12; i++){ f*=i; } return f; } }," >> performance-test.js
+          echo "  { name: 'Prime Check 10000019', task: () => { for(let i=2, s=Math.sqrt(10000019); i<=s; i++){ if(10000019 % i === 0) return false; } return 10000019 > 1; } }," >> performance-test.js
+          echo "  { name: 'QuickSort 10000', task: () => { const sort = arr => arr.length <= 1 ? arr : sort(arr.filter(v => v < arr[0])).concat(arr.filter(v => v === arr[0])).concat(sort(arr.filter(v => v > arr[0]))); return sort(Array.from({length: 10000}, () => Math.floor(Math.random() * 10000))); } }," >> performance-test.js
+          echo "  { name: 'Array Reduce 10000', task: () => Array.from({length: 10000}, (_, i) => i).reduce((acc, val) => acc + val, 0) }," >> performance-test.js
+          echo "  { name: 'String Concatenation 1000', task: () => { let str = ''; for(let i=0; i<1000; i++){ str += 'a'; } return str; } }," >> performance-test.js
+          echo "  { name: 'Map Operations 10000', task: () => { const map = new Map(); for(let i=0; i<10000; i++){ map.set(i, i*2); } return map.size; } }," >> performance-test.js
+          echo "  { name: 'Set Operations 10000', task: () => { const set = new Set(); for(let i=0; i<10000; i++){ set.add(i); } return set.size; } }" >> performance-test.js
+          echo "];" >> performance-test.js
+          echo "tasks.forEach(({ name, task }) => suite.add(name, task));" >> performance-test.js
+          echo "suite.on('cycle', event => console.log(String(event.target)))" >> performance-test.js
+          echo "     .on('complete', function() {" >> performance-test.js
+          echo "       console.log('All tasks completed. Fastest is ' + this.filter('fastest').map('name'));" >> performance-test.js
+          echo "     })" >> performance-test.js
+          echo "     .run({ 'async': true });" >> performance-test.js
 
   node-performance-alpine:
     runs-on: ubuntu-latest
@@ -128,30 +112,22 @@ jobs:
         run: |
           echo "const Benchmark = require('benchmark');" > performance-test.js
           echo "const suite = new Benchmark.Suite();" >> performance-test.js
-          echo "const fibonacci = (n) => n <= 1 ? n : fibonacci(n - 1) + fibonacci(n - 2);" >> performance-test.js
-          echo "const factorial = (n) => n === 0 ? 1 : n * factorial(n - 1);" >> performance-test.js
-          echo "const performSyncTask = () => fibonacci(30);" >> performance-test.js
-          echo "const performAsyncTask = (callback) => setTimeout(callback, 1000);" >> performance-test.js
-          echo "let totalTests = 0, completedTests = 0;" >> performance-test.js
-          echo "const runTests = (name, task, options = {}) => {" >> performance-test.js
-          echo "  totalTests++;" >> performance-test.js
-          echo "  suite.add(name, function(deferred) {" >> performance-test.js
-          echo "    if (options.defer) task(deferred); else task();" >> performance-test.js
-          echo "  }, options)" >> performance-test.js
-          echo "    .on('complete', function() {" >> performance-test.js
-          echo "      completedTests++;" >> performance-test.js
-          echo "      if (completedTests === totalTests) {" >> performance-test.js
-          echo "        const endTime = new Date().getTime();" >> performance-test.js
-          echo "        console.log('Total execution time for all tests: ' + (endTime - startTime) + ' ms');" >> performance-test.js
-          echo "      }" >> performance-test.js
-          echo "    });" >> performance-test.js
-          echo "};" >> performance-test.js
-          echo "const startTime = new Date().getTime();" >> performance-test.js
-          echo "runTests('Synchronous Fibonacci', performSyncTask);" >> performance-test.js
-          echo "runTests('Synchronous Factorial', () => factorial(10));" >> performance-test.js
-          echo "runTests('Asynchronous Task', (deferred) => performAsyncTask(() => { deferred.resolve(); }), { defer: true });" >> performance-test.js
-          echo "suite.on('cycle', (event) => console.log(String(event.target))).run({ 'async': true });" >> performance-test.js
-          node performance-test.js
+          echo "const tasks = [" >> performance-test.js
+          echo "  { name: 'Fibonacci 35', task: () => { let a=0, b=1, f=1; for(let i=2; i<=35; i++){ f=a+b; a=b; b=f; } return f; } }," >> performance-test.js
+          echo "  { name: 'Factorial 12', task: () => { let f=1; for(let i=1; i<=12; i++){ f*=i; } return f; } }," >> performance-test.js
+          echo "  { name: 'Prime Check 10000019', task: () => { for(let i=2, s=Math.sqrt(10000019); i<=s; i++){ if(10000019 % i === 0) return false; } return 10000019 > 1; } }," >> performance-test.js
+          echo "  { name: 'QuickSort 10000', task: () => { const sort = arr => arr.length <= 1 ? arr : sort(arr.filter(v => v < arr[0])).concat(arr.filter(v => v === arr[0])).concat(sort(arr.filter(v => v > arr[0]))); return sort(Array.from({length: 10000}, () => Math.floor(Math.random() * 10000))); } }," >> performance-test.js
+          echo "  { name: 'Array Reduce 10000', task: () => Array.from({length: 10000}, (_, i) => i).reduce((acc, val) => acc + val, 0) }," >> performance-test.js
+          echo "  { name: 'String Concatenation 1000', task: () => { let str = ''; for(let i=0; i<1000; i++){ str += 'a'; } return str; } }," >> performance-test.js
+          echo "  { name: 'Map Operations 10000', task: () => { const map = new Map(); for(let i=0; i<10000; i++){ map.set(i, i*2); } return map.size; } }," >> performance-test.js
+          echo "  { name: 'Set Operations 10000', task: () => { const set = new Set(); for(let i=0; i<10000; i++){ set.add(i); } return set.size; } }" >> performance-test.js
+          echo "];" >> performance-test.js
+          echo "tasks.forEach(({ name, task }) => suite.add(name, task));" >> performance-test.js
+          echo "suite.on('cycle', event => console.log(String(event.target)))" >> performance-test.js
+          echo "     .on('complete', function() {" >> performance-test.js
+          echo "       console.log('All tasks completed. Fastest is ' + this.filter('fastest').map('name'));" >> performance-test.js
+          echo "     })" >> performance-test.js
+          echo "     .run({ 'async': true });" >> performance-test.js
 
 
 
