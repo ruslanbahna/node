@@ -43,27 +43,27 @@ jobs:
           # Define 8 diverse functions
           echo "suite.add('Fibonacci Recursive', function() {" >> performance-test.js
           echo "  const fib = (n) => n < 2 ? n : fib(n - 1) + fib(n - 2);" >> performance-test.js
-          echo "  fib(15);" >> performance-test.js
+          echo "  fib(20);" >> performance-test.js
           echo "}).add('Array Sorting', function() {" >> performance-test.js
-          echo "  const arr = Array.from({ length: 10000 }, () => Math.random());" >> performance-test.js
+          echo "  const arr = Array.from({ length: 100000 }, () => Math.random());" >> performance-test.js
           echo "  arr.sort((a, b) => a - b);" >> performance-test.js
           echo "}).add('String Manipulation', function() {" >> performance-test.js
           echo "  let str = '';" >> performance-test.js
-          echo "  for (let i = 0; i < 10000; i++) str += 'a';" >> performance-test.js
+          echo "  for (let i = 0; i < 100000; i++) str += 'a';" >> performance-test.js
           echo "}).add('Map Operations', function() {" >> performance-test.js
           echo "  const map = new Map();" >> performance-test.js
-          echo "  for (let i = 0; i < 10000; i++) map.set(i, i * i);" >> performance-test.js
+          echo "  for (let i = 0; i < 100000; i++) map.set(i, i * i);" >> performance-test.js
           echo "}).add('Set Operations', function() {" >> performance-test.js
           echo "  const set = new Set();" >> performance-test.js
-          echo "  for (let i = 0; i < 10000; i++) set.add(i);" >> performance-test.js
+          echo "  for (let i = 0; i < 100000; i++) set.add(i);" >> performance-test.js
           echo "}).add('JSON Parsing', function() {" >> performance-test.js
-          echo "  const json = JSON.stringify(Array.from({ length: 10000 }, (_, i) => ({ num: i }))); " >> performance-test.js
+          echo "  const json = JSON.stringify(Array.from({ length: 100000 }, (_, i) => ({ num: i }))); " >> performance-test.js
           echo "  JSON.parse(json);" >> performance-test.js
           echo "}).add('RegExp Matching', function() {" >> performance-test.js
           echo "  const str = 'hello world';" >> performance-test.js
           echo "  /o/.test(str);" >> performance-test.js
           echo "}).add('Math Operations', function() {" >> performance-test.js
-          echo "  for (let i = 0; i < 10000; i++) Math.sqrt(i);" >> performance-test.js
+          echo "  for (let i = 0; i < 100000; i++) Math.sqrt(i);" >> performance-test.js
           echo "});" >> performance-test.js
           # Capture total execution time
           echo "const totalStartTime = Date.now();" >> performance-test.js
@@ -100,27 +100,27 @@ jobs:
           # Define 8 diverse functions
           echo "suite.add('Fibonacci Recursive', function() {" >> performance-test.js
           echo "  const fib = (n) => n < 2 ? n : fib(n - 1) + fib(n - 2);" >> performance-test.js
-          echo "  fib(15);" >> performance-test.js
+          echo "  fib(20);" >> performance-test.js
           echo "}).add('Array Sorting', function() {" >> performance-test.js
-          echo "  const arr = Array.from({ length: 10000 }, () => Math.random());" >> performance-test.js
+          echo "  const arr = Array.from({ length: 100000 }, () => Math.random());" >> performance-test.js
           echo "  arr.sort((a, b) => a - b);" >> performance-test.js
           echo "}).add('String Manipulation', function() {" >> performance-test.js
           echo "  let str = '';" >> performance-test.js
-          echo "  for (let i = 0; i < 10000; i++) str += 'a';" >> performance-test.js
+          echo "  for (let i = 0; i < 100000; i++) str += 'a';" >> performance-test.js
           echo "}).add('Map Operations', function() {" >> performance-test.js
           echo "  const map = new Map();" >> performance-test.js
-          echo "  for (let i = 0; i < 10000; i++) map.set(i, i * i);" >> performance-test.js
+          echo "  for (let i = 0; i < 100000; i++) map.set(i, i * i);" >> performance-test.js
           echo "}).add('Set Operations', function() {" >> performance-test.js
           echo "  const set = new Set();" >> performance-test.js
-          echo "  for (let i = 0; i < 10000; i++) set.add(i);" >> performance-test.js
+          echo "  for (let i = 0; i < 100000; i++) set.add(i);" >> performance-test.js
           echo "}).add('JSON Parsing', function() {" >> performance-test.js
-          echo "  const json = JSON.stringify(Array.from({ length: 10000 }, (_, i) => ({ num: i }))); " >> performance-test.js
+          echo "  const json = JSON.stringify(Array.from({ length: 100000 }, (_, i) => ({ num: i }))); " >> performance-test.js
           echo "  JSON.parse(json);" >> performance-test.js
           echo "}).add('RegExp Matching', function() {" >> performance-test.js
           echo "  const str = 'hello world';" >> performance-test.js
           echo "  /o/.test(str);" >> performance-test.js
           echo "}).add('Math Operations', function() {" >> performance-test.js
-          echo "  for (let i = 0; i < 10000; i++) Math.sqrt(i);" >> performance-test.js
+          echo "  for (let i = 0; i < 100000; i++) Math.sqrt(i);" >> performance-test.js
           echo "});" >> performance-test.js
           # Capture total execution time
           echo "const totalStartTime = Date.now();" >> performance-test.js
@@ -155,27 +155,27 @@ jobs:
           # Define 8 diverse functions
           echo "suite.add('Fibonacci Recursive', function() {" >> performance-test.js
           echo "  const fib = (n) => n < 2 ? n : fib(n - 1) + fib(n - 2);" >> performance-test.js
-          echo "  fib(15);" >> performance-test.js
+          echo "  fib(20);" >> performance-test.js
           echo "}).add('Array Sorting', function() {" >> performance-test.js
-          echo "  const arr = Array.from({ length: 10000 }, () => Math.random());" >> performance-test.js
+          echo "  const arr = Array.from({ length: 100000 }, () => Math.random());" >> performance-test.js
           echo "  arr.sort((a, b) => a - b);" >> performance-test.js
           echo "}).add('String Manipulation', function() {" >> performance-test.js
           echo "  let str = '';" >> performance-test.js
-          echo "  for (let i = 0; i < 10000; i++) str += 'a';" >> performance-test.js
+          echo "  for (let i = 0; i < 100000; i++) str += 'a';" >> performance-test.js
           echo "}).add('Map Operations', function() {" >> performance-test.js
           echo "  const map = new Map();" >> performance-test.js
-          echo "  for (let i = 0; i < 10000; i++) map.set(i, i * i);" >> performance-test.js
+          echo "  for (let i = 0; i < 100000; i++) map.set(i, i * i);" >> performance-test.js
           echo "}).add('Set Operations', function() {" >> performance-test.js
           echo "  const set = new Set();" >> performance-test.js
-          echo "  for (let i = 0; i < 10000; i++) set.add(i);" >> performance-test.js
+          echo "  for (let i = 0; i < 100000; i++) set.add(i);" >> performance-test.js
           echo "}).add('JSON Parsing', function() {" >> performance-test.js
-          echo "  const json = JSON.stringify(Array.from({ length: 10000 }, (_, i) => ({ num: i }))); " >> performance-test.js
+          echo "  const json = JSON.stringify(Array.from({ length: 100000 }, (_, i) => ({ num: i }))); " >> performance-test.js
           echo "  JSON.parse(json);" >> performance-test.js
           echo "}).add('RegExp Matching', function() {" >> performance-test.js
           echo "  const str = 'hello world';" >> performance-test.js
           echo "  /o/.test(str);" >> performance-test.js
           echo "}).add('Math Operations', function() {" >> performance-test.js
-          echo "  for (let i = 0; i < 10000; i++) Math.sqrt(i);" >> performance-test.js
+          echo "  for (let i = 0; i < 100000; i++) Math.sqrt(i);" >> performance-test.js
           echo "});" >> performance-test.js
           # Capture total execution time
           echo "const totalStartTime = Date.now();" >> performance-test.js
