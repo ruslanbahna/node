@@ -38,7 +38,7 @@ jobs:
 
       - name: Run Node Performance Test
         run: |
-          echo "const Benchmark = require('benchmark');" >> benchmark-test.js
+          echo "const Benchmark = require('benchmark');" > benchmark-test.js
           echo "const suite = new Benchmark.Suite;" >> benchmark-test.js
           
           echo "function fibSync(n) {" >> benchmark-test.js
@@ -48,12 +48,22 @@ jobs:
 
           echo "function fibAsync(n) {" >> benchmark-test.js
           echo "  return new Promise(resolve => {" >> benchmark-test.js
-          echo "    if (n < 2) resolve(n);" >> benchmark-test.js
-          echo "    resolve(fibAsync(n - 1) + fibAsync(n - 2));" >> benchmark-test.js
+          echo "    if (n < 2) { resolve(n); return; }" >> benchmark-test.js
+          echo "    resolve(fibAsync(n - 1).then(a => fibAsync(n - 2).then(b => a + b)));" >> benchmark-test.js
           echo "  });" >> benchmark-test.js
           echo "}" >> benchmark-test.js
-          echo "const Benchmark = require('benchmark');" >> benchmark-test.js
-          echo "const suite = new Benchmark.Suite;" >> benchmark-test.js
+          
+          # Add the synchronous and asynchronous Fibonacci functions to the benchmark suite
+          echo "suite.add('Sync Fibonacci', function() {" >> benchmark-test.js
+          echo "  fibSync(10);" >> benchmark-test.js
+          echo "})" >> benchmark-test.js
+          echo ".add('Async Fibonacci', {" >> benchmark-test.js
+          echo "  defer: true," >> benchmark-test.js
+          echo "  fn: function(deferred) {" >> benchmark-test.js
+          echo "    fibAsync(10).then(() => deferred.resolve());" >> benchmark-test.js
+          echo "  }" >> benchmark-test.js
+          echo "})" >> benchmark-test.js
+
           echo "suite.add('RegExp#test', function() {" >> benchmark-test.js
           echo "  /o/.test('Hello World!');" >> benchmark-test.js
           echo "})" >> benchmark-test.js
