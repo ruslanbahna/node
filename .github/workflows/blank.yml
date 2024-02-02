@@ -38,22 +38,22 @@ jobs:
 
       - name: Run Node Performance Test
         run: |
-          totalElapsedTime=0
-
-          echo 'Running asynchronous Test 1...'
-          asyncTest1StartTime=$(date +%s%N)
-          node -e "
-            const Benchmark = require('benchmark');
-            const suite = new Benchmark.Suite();
-
-            suite.add('asyncTest1', {
+        node -e "
+          const Benchmark = require('benchmark');
+          const suite = new Benchmark.Suite();
+          
+          ['asyncTest1', 'syncTest2', 'asyncTest3'].forEach(testName => {
+            suite.add(testName, {
               defer: true,
               fn: deferred => {
                 let completed = 0;
                 const startTime = process.hrtime();
-
+                
                 for (let i = 0; i < 1000000; i++) {
-                  Math.sqrt(i);
+                  if (testName === 'asyncTest1') Math.sqrt(i);
+                  else if (testName === 'syncTest2') Math.pow(i, 2);
+                  else if (testName === 'asyncTest3') Math.log(i);
+                  
                   if (++completed === 1000000) {
                     const endTime = process.hrtime(startTime);
                     deferred.resolve(endTime[0] * 1e9 + endTime[1]);
@@ -61,95 +61,19 @@ jobs:
                 }
               }
             });
-
-            suite.on('cycle', function(event) {
-              console.log(String(event.target));
-            });
-
-            suite.on('complete', function() {
-              console.log('Fastest is ' + this.filter('fastest').map('name'));
-            });
-
-            suite.run({ async: true });
-          "
-          asyncTest1EndTime=$(date +%s%N)
-
-          elapsedAsyncTest1Time=$((asyncTest1EndTime - asyncTest1StartTime))
-          totalElapsedTime=$((totalElapsedTime + elapsedAsyncTest1Time))
-
-          echo 'Running synchronous Test 2...'
-          syncTest2StartTime=$(date +%s%N)
-          node -e "
-            const Benchmark = require('benchmark');
-            const suite = new Benchmark.Suite();
-
-            suite.add('syncTest2', {
-              fn: function() {
-                const startTime = process.hrtime();
-
-                for (let i = 0; i < 1000000; i++) {
-                  Math.pow(i, 2);
-                }
-
-                const endTime = process.hrtime(startTime);
-                console.log('syncTest2 Execution Time: ' + (endTime[0] * 1e9 + endTime[1]) + ' nanoseconds');
-              }
-            });
-
-            suite.on('cycle', function(event) {
-              console.log(String(event.target));
-            });
-
-            suite.on('complete', function() {
-              console.log('Fastest is ' + this.filter('fastest').map('name'));
-            });
-
-            suite.run();
-          "
-          syncTest2EndTime=$(date +%s%N)
-
-          elapsedSyncTest2Time=$((syncTest2EndTime - syncTest2StartTime))
-          totalElapsedTime=$((totalElapsedTime + elapsedSyncTest2Time))
-
-          echo 'Running asynchronous Test 3...'
-          asyncTest3StartTime=$(date +%s%N)
-          node -e "
-            const Benchmark = require('benchmark');
-            const suite = new Benchmark.Suite();
-
-            suite.add('asyncTest3', {
-              defer: true,
-              fn: deferred => {
-                let completed = 0;
-                const startTime = process.hrtime();
-
-                for (let i = 0; i < 1000000; i++) {
-                  Math.log(i);
-                  if (++completed === 1000000) {
-                    const endTime = process.hrtime(startTime);
-                    deferred.resolve(endTime[0] * 1e9 + endTime[1]);
-                  }
-                }
-              }
-            });
-
-            suite.on('cycle', function(event) {
-              console.log(String(event.target));
-            });
-
-            suite.on('complete', function() {
-              console.log('Fastest is ' + this.filter('fastest').map('name'));
-            });
-
-            suite.run({ async: true });
-          "
-          asyncTest3EndTime=$(date +%s%N)
-
-          elapsedAsyncTest3Time=$((asyncTest3EndTime - asyncTest3StartTime))
-          totalElapsedTime=$((totalElapsedTime + elapsedAsyncTest3Time))
-
-          totalElapsedTimeInSeconds=$(echo "scale=2; $totalElapsedTime / 1e9" | bc)
-          echo "Total Elapsed Time for All Tests: $totalElapsedTimeInSeconds seconds"
+          });
+          
+          suite.on('cycle', function(event) {
+            console.log(String(event.target));
+          });
+          
+          suite.on('complete', function() {
+            const fastest = this.filter('fastest').map('name');
+            console.log('Fastest is ' + fastest);
+          });
+          
+          suite.run({ async: true });
+        "
 
   node-performance-alpine:
     runs-on: ubuntu-latest
