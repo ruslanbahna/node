@@ -13,52 +13,57 @@ jobs:
       image: ubuntu:latest
 
     steps:
-      - name: Install Node.js and NPM
+      - name: Install NVM, Node.js, and NPM
         run: |
           apt-get update
-          apt-get install -y nodejs npm
+          apt-get install -y curl
+          curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.1/install.sh | bash
+          export NVM_DIR="$HOME/.nvm"
+          [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
+          [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
+          nvm install node  # Install the latest version of Node.js
+          node --version
+          npm --version
 
       - name: Install Benchmark.js
         run: npm install benchmark
 
       - name: Run Node Performance Test
         run: |
-          node --version
-          npm --version
           node -e "
-            const Benchmark = require('benchmark');
-            const suite = new Benchmark.Suite;
+          const Benchmark = require('benchmark');
+          const suite = new Benchmark.Suite;
 
-            // Synchronous test
-            suite.add('syncTest', function() {
-              for (let i = 0; i < 100000; i++) {
-                Math.pow(i, 2);
-              }
-            });
+          // Synchronous test
+          suite.add('syncTest', function() {
+            for (let i = 0; i < 100000; i++) {
+              Math.pow(i, 2);
+            }
+          });
 
-            // Asynchronous test with simulated delay
-            suite.add('asyncTest', {
-              defer: true,
-              fn: function(deferred) {
-                setTimeout(() => {
-                  for (let i = 0; i < 100000; i++) {
-                    Math.sqrt(i);
-                  }
-                  deferred.resolve();
-                }, 100);
-              }
-            });
+          // Asynchronous test with simulated delay
+          suite.add('asyncTest', {
+            defer: true,
+            fn: function(deferred) {
+              setTimeout(() => {
+                for (let i = 0; i < 100000; i++) {
+                  Math.sqrt(i);
+                }
+                deferred.resolve();
+              }, 100);
+            }
+          });
 
-            suite.on('cycle', function(event) {
-              console.log(String(event.target));
-            });
+          suite.on('cycle', function(event) {
+            console.log(String(event.target));
+          });
 
-            suite.on('complete', function() {
-              console.log('Fastest is ' + this.filter('fastest').map('name'));
-            });
+          suite.on('complete', function() {
+            console.log('Fastest is ' + this.filter('fastest').map('name'));
+          });
 
-            suite.run({ async: true });
-            "
+          suite.run({ async: true });
+          "
 
 
 
