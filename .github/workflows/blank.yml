@@ -50,11 +50,13 @@ jobs:
               defer: true,
               fn: deferred => {
                 let completed = 0;
+                const startTime = process.hrtime();
+
                 for (let i = 0; i < 1000000; i++) {
                   Math.sqrt(i);
                   if (++completed === 1000000) {
-                    const asyncTest1EndTime = new Date().getTime();
-                    deferred.resolve(asyncTest1EndTime);
+                    const endTime = process.hrtime(startTime);
+                    deferred.resolve(endTime[0] * 1e9 + endTime[1]);
                   }
                 }
               }
@@ -65,8 +67,7 @@ jobs:
             });
 
             suite.on('complete', function() {
-              const fastest = this.filter('fastest').map('name');
-              console.log('Fastest is ' + fastest);
+              console.log('Fastest is ' + this.filter('fastest').map('name'));
             });
 
             suite.run({ async: true });
@@ -84,9 +85,14 @@ jobs:
 
             suite.add('syncTest2', {
               fn: function() {
+                const startTime = process.hrtime();
+
                 for (let i = 0; i < 1000000; i++) {
                   Math.pow(i, 2);
                 }
+
+                const endTime = process.hrtime(startTime);
+                console.log('syncTest2 Execution Time: ' + (endTime[0] * 1e9 + endTime[1]) + ' nanoseconds');
               }
             });
 
@@ -95,8 +101,7 @@ jobs:
             });
 
             suite.on('complete', function() {
-              const fastest = this.filter('fastest').map('name');
-              console.log('Fastest is ' + fastest);
+              console.log('Fastest is ' + this.filter('fastest').map('name'));
             });
 
             suite.run();
@@ -116,11 +121,13 @@ jobs:
               defer: true,
               fn: deferred => {
                 let completed = 0;
+                const startTime = process.hrtime();
+
                 for (let i = 0; i < 1000000; i++) {
                   Math.log(i);
                   if (++completed === 1000000) {
-                    const asyncTest3EndTime = new Date().getTime();
-                    deferred.resolve(asyncTest3EndTime);
+                    const endTime = process.hrtime(startTime);
+                    deferred.resolve(endTime[0] * 1e9 + endTime[1]);
                   }
                 }
               }
@@ -131,8 +138,7 @@ jobs:
             });
 
             suite.on('complete', function() {
-              const fastest = this.filter('fastest').map('name');
-              console.log('Fastest is ' + fastest);
+              console.log('Fastest is ' + this.filter('fastest').map('name'));
             });
 
             suite.run({ async: true });
@@ -142,7 +148,7 @@ jobs:
           elapsedAsyncTest3Time=$((asyncTest3EndTime - asyncTest3StartTime))
           totalElapsedTime=$((totalElapsedTime + elapsedAsyncTest3Time))
 
-          totalElapsedTimeInSeconds=$(echo "scale=2; $totalElapsedTime / 1000000000" | bc)
+          totalElapsedTimeInSeconds=$(echo "scale=2; $totalElapsedTime / 1e9" | bc)
           echo "Total Elapsed Time for All Tests: $totalElapsedTimeInSeconds seconds"
 
   node-performance-alpine:
