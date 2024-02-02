@@ -39,22 +39,48 @@ jobs:
       - name: Run Node Performance Test
         run: |
           echo 'Running synchronous Test 1...'
-          echo 'console.time("syncTest1"); for (let i = 0; i < 1000000; i++) { Math.sqrt(i); } console.timeEnd("syncTest1");' | node
+          node -e "
+            const Benchmark = require('benchmark');
+            const suite = new Benchmark.Suite();
 
-          echo 'Running asynchronous Test 1...'
-          echo 'console.time("asyncTest1"); setImmediate(() => { for (let i = 0; i < 1000000; i++) { Math.sqrt(i); } console.timeEnd("asyncTest1"); });' | node
+            suite.add('syncTest1', function() {
+              for (let i = 0; i < 1000000; i++) {
+                Math.sqrt(i);
+              }
+            });
+
+            suite.on('cycle', function(event) {
+              console.log(String(event.target));
+            });
+
+            suite.on('complete', function() {
+              console.log('Fastest is ' + this.filter('fastest').map('name'));
+            });
+
+            suite.run();
+          "
 
           echo 'Running synchronous Test 2...'
-          echo 'console.time("syncTest2"); for (let i = 0; i < 1000000; i++) { Math.pow(i, 2); } console.timeEnd("syncTest2");' | node
+          node -e "
+            const Benchmark = require('benchmark');
+            const suite = new Benchmark.Suite();
 
-          echo 'Running asynchronous Test 2...'
-          echo 'console.time("asyncTest2"); setImmediate(() => { for (let i = 0; i < 1000000; i++) { Math.pow(i, 2); } console.timeEnd("asyncTest2"); });' | node
+            suite.add('syncTest2', function() {
+              for (let i = 0; i < 1000000; i++) {
+                Math.pow(i, 2);
+              }
+            });
 
-          echo 'Running synchronous Test 3...'
-          echo 'console.time("syncTest3"); for (let i = 0; i < 1000000; i++) { Math.log(i); } console.timeEnd("syncTest3");' | node
+            suite.on('cycle', function(event) {
+              console.log(String(event.target));
+            });
 
-          echo 'Running asynchronous Test 3...'
-          echo 'console.time("asyncTest3"); setImmediate(() => { for (let i = 0; i < 1000000; i++) { Math.log(i); } console.timeEnd("asyncTest3"); });' | node
+            suite.on('complete', function() {
+              console.log('Fastest is ' + this.filter('fastest').map('name'));
+            });
+
+            suite.run();
+          "
 
   node-performance-alpine:
     runs-on: ubuntu-latest
