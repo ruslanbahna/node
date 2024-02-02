@@ -38,10 +38,11 @@ jobs:
 
       - name: Run Node Performance Test
         run: |
-          totalExecutionTime=0
+          totalElapsedTime=0
 
           echo 'Running asynchronous Test 1...'
-          asyncTest1ExecutionTime=$(node -e "
+          asyncTest1StartTime=$(date +%s%N)
+          node -e "
             const Benchmark = require('benchmark');
             const suite = new Benchmark.Suite();
 
@@ -49,13 +50,11 @@ jobs:
               defer: true,
               fn: deferred => {
                 let completed = 0;
-                const startTime = process.hrtime();
-
                 for (let i = 0; i < 1000000; i++) {
                   Math.sqrt(i);
                   if (++completed === 1000000) {
-                    const endTime = process.hrtime(startTime);
-                    deferred.resolve(endTime[0] * 1e9 + endTime[1]);
+                    const asyncTest1EndTime = new Date().getTime();
+                    deferred.resolve(asyncTest1EndTime);
                   }
                 }
               }
@@ -71,25 +70,23 @@ jobs:
             });
 
             suite.run({ async: true });
-          ")
+          "
+          asyncTest1EndTime=$(date +%s%N)
 
-          totalExecutionTime=$((totalExecutionTime + asyncTest1ExecutionTime))
+          elapsedAsyncTest1Time=$((asyncTest1EndTime - asyncTest1StartTime))
+          totalElapsedTime=$((totalElapsedTime + elapsedAsyncTest1Time))
 
           echo 'Running synchronous Test 2...'
-          syncTest2ExecutionTime=$(node -e "
+          syncTest2StartTime=$(date +%s%N)
+          node -e "
             const Benchmark = require('benchmark');
             const suite = new Benchmark.Suite();
 
             suite.add('syncTest2', {
               fn: function() {
-                const startTime = process.hrtime();
-
                 for (let i = 0; i < 1000000; i++) {
                   Math.pow(i, 2);
                 }
-
-                const endTime = process.hrtime(startTime);
-                console.log('syncTest2 Execution Time: ' + (endTime[0] * 1e9 + endTime[1]) + ' nanoseconds');
               }
             });
 
@@ -103,12 +100,15 @@ jobs:
             });
 
             suite.run();
-          ")
+          "
+          syncTest2EndTime=$(date +%s%N)
 
-          totalExecutionTime=$((totalExecutionTime + syncTest2ExecutionTime))
+          elapsedSyncTest2Time=$((syncTest2EndTime - syncTest2StartTime))
+          totalElapsedTime=$((totalElapsedTime + elapsedSyncTest2Time))
 
           echo 'Running asynchronous Test 3...'
-          asyncTest3ExecutionTime=$(node -e "
+          asyncTest3StartTime=$(date +%s%N)
+          node -e "
             const Benchmark = require('benchmark');
             const suite = new Benchmark.Suite();
 
@@ -116,13 +116,11 @@ jobs:
               defer: true,
               fn: deferred => {
                 let completed = 0;
-                const startTime = process.hrtime();
-
                 for (let i = 0; i < 1000000; i++) {
                   Math.log(i);
                   if (++completed === 1000000) {
-                    const endTime = process.hrtime(startTime);
-                    deferred.resolve(endTime[0] * 1e9 + endTime[1]);
+                    const asyncTest3EndTime = new Date().getTime();
+                    deferred.resolve(asyncTest3EndTime);
                   }
                 }
               }
@@ -138,11 +136,14 @@ jobs:
             });
 
             suite.run({ async: true });
-          ")
+          "
+          asyncTest3EndTime=$(date +%s%N)
 
-          totalExecutionTime=$((totalExecutionTime + asyncTest3ExecutionTime))
+          elapsedAsyncTest3Time=$((asyncTest3EndTime - asyncTest3StartTime))
+          totalElapsedTime=$((totalElapsedTime + elapsedAsyncTest3Time))
 
-          echo "Total Execution Time for All Tests: $totalExecutionTime nanoseconds"
+          totalElapsedTimeInSeconds=$(echo "scale=2; $totalElapsedTime / 1000000000" | bc)
+          echo "Total Elapsed Time for All Tests: $totalElapsedTimeInSeconds seconds"
 
   node-performance-alpine:
     runs-on: ubuntu-latest
