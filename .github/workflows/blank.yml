@@ -53,7 +53,7 @@ jobs:
           echo "  console.log('Fastest is ' + this.filter('fastest').map('name'));" >> benchmark-test.js
           echo "})" >> benchmark-test.js
           echo ".run({ 'async': true });" >> benchmark-test.js
-          node performance-test.js
+          node benchmark-test.js
 
 
   node-performance-photon:
