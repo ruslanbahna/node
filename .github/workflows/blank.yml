@@ -27,41 +27,37 @@ jobs:
           npm --version
           node -e "
             const Benchmark = require('benchmark');
-            const suite = new Benchmark.Suite();
-            
-            ['asyncTest1', 'syncTest2', 'asyncTest3', 'syncTest4', 'asyncTest5', 'syncTest6', 'asyncTest7', 'syncTest8', 'asyncTest9', 'syncTest10', 'asyncTest11', 'syncTest12', 'asyncTest13', 'syncTest14', 'asyncTest15', 'syncTest16', 'asyncTest17', 'syncTest18', 'asyncTest19', 'syncTest20', 'optimizedAsyncTest'].forEach(testName => {
-              suite.add(testName, {
-                defer: true,
-                fn: deferred => {
-                  let completed = 0;
-                  const startTime = process.hrtime();
-                  
-                  if (testName === 'optimizedAsyncTest') {
-                    const array = new Float64Array(1000000);
-                    for (let i = 0; i < 1000000; i++) {
-                      array[i] = Math.sqrt(i);
-                    }
-                  } else {
-                    for (let i = 0; i < 2000000; i++) {
-                      if (testName.startsWith('async')) Math.sqrt(i);
-                      else if (testName.startsWith('sync')) Math.pow(i, 2);
-                    }
-                  }
-                  
-                  const endTime = process.hrtime(startTime);
-                  deferred.resolve(endTime[0] * 1e9 + endTime[1]);
-                }
-              });
+            const suite = new Benchmark.Suite;
+
+            // Synchronous test
+            suite.add('syncTest', function() {
+              for (let i = 0; i < 100000; i++) {
+                Math.pow(i, 2);
+              }
             });
-            
+
+            // Asynchronous test with simulated delay
+            suite.add('asyncTest', {
+              defer: true,
+              fn: function(deferred) {
+                setTimeout(() => {
+                  for (let i = 0; i < 100000; i++) {
+                    Math.sqrt(i);
+                  }
+                  deferred.resolve();
+                }, 100);
+              }
+            });
+
             suite.on('cycle', function(event) {
               console.log(String(event.target));
             });
-            
+
             suite.on('complete', function() {
-              const fastest = this.filter('fastest').map('name');
-              console.log('Fastest is ' + fastest);
+              console.log('Fastest is ' + this.filter('fastest').map('name'));
             });
+
+            suite.run({ async: true });
             "
 
 
