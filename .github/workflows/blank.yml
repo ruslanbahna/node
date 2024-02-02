@@ -53,13 +53,19 @@ jobs:
 
                   if (testName.startsWith('async')) {
                     for (let i = 0; i < iterations; i++) {
-                      // Add your additional 'async' operation here
                       Math.log(i);
                     }
                   } else if (testName.startsWith('sync')) {
                     for (let i = 0; i < iterations; i++) {
-                      // Add your additional 'sync' operation here
                       Math.exp(i);
+                    }
+                  } else if (testName.startsWith('as')) {
+                    for (let i = 0; i < iterations; i++) {
+                      Math.abs(i);
+                    }
+                  } else if (testName.startsWith('s')) {
+                    for (let i = 0; i < iterations; i++) {
+                      Math.sqrt(i);
                     }
                   }
 
