@@ -91,46 +91,42 @@ jobs:
 
       - name: Run Node Performance Test
         run: |
-          echo "const Benchmark = require('benchmark');" > benchmark-test.js
-          echo "const suite = new Benchmark.Suite;" >> benchmark-test.js
-          
-          echo "function fibSync(n) {" >> benchmark-test.js
-          echo "  if (n < 2) return n;" >> benchmark-test.js
-          echo "  return fibSync(n - 1) + fibSync(n - 2);" >> benchmark-test.js
-          echo "}" >> benchmark-test.js
-
-          echo "function fibAsync(n) {" >> benchmark-test.js
-          echo "  return new Promise(resolve => {" >> benchmark-test.js
-          echo "    if (n < 2) { resolve(n); return; }" >> benchmark-test.js
-          echo "    resolve(fibAsync(n - 1).then(a => fibAsync(n - 2).then(b => a + b)));" >> benchmark-test.js
-          echo "  });" >> benchmark-test.js
-          echo "}" >> benchmark-test.js
-          
-          # Add the synchronous and asynchronous Fibonacci functions to the benchmark suite
-          echo "suite.add('Sync Fibonacci', function() {" >> benchmark-test.js
-          echo "  fibSync(10);" >> benchmark-test.js
-          echo "})" >> benchmark-test.js
-          echo ".add('Async Fibonacci', {" >> benchmark-test.js
-          echo "  defer: true," >> benchmark-test.js
-          echo "  fn: function(deferred) {" >> benchmark-test.js
-          echo "    fibAsync(10).then(() => deferred.resolve());" >> benchmark-test.js
-          echo "  }" >> benchmark-test.js
-          echo "})" >> benchmark-test.js
-
-          echo "suite.add('RegExp#test', function() {" >> benchmark-test.js
-          echo "  /o/.test('Hello World!');" >> benchmark-test.js
-          echo "})" >> benchmark-test.js
-          echo ".add('String#indexOf', function() {" >> benchmark-test.js
-          echo "  'Hello World!'.indexOf('o') > -1;" >> benchmark-test.js
-          echo "})" >> benchmark-test.js
-          echo ".on('cycle', function(event) {" >> benchmark-test.js
-          echo "  console.log(String(event.target));" >> benchmark-test.js
-          echo "})" >> benchmark-test.js
-          echo ".on('complete', function() {" >> benchmark-test.js
-          echo "  console.log('Fastest is ' + this.filter('fastest').map('name'));" >> benchmark-test.js
-          echo "})" >> benchmark-test.js
-          echo ".run({ 'async': true });" >> benchmark-test.js
-          node benchmark-test.js
+          node -e "
+            const Benchmark = require('benchmark');
+            const suite = new Benchmark.Suite();
+            
+            ['asyncTest1', 'syncTest2', 'asyncTest3'].forEach(testName => {
+              suite.add(testName, {
+                defer: true,
+                fn: deferred => {
+                  let completed = 0;
+                  const startTime = process.hrtime();
+                  
+                  for (let i = 0; i < 1000000; i++) {
+                    if (testName === 'asyncTest1') Math.sqrt(i);
+                    else if (testName === 'syncTest2') Math.pow(i, 2);
+                    else if (testName === 'asyncTest3') Math.log(i);
+                    
+                    if (++completed === 1000000) {
+                      const endTime = process.hrtime(startTime);
+                      deferred.resolve(endTime[0] * 1e9 + endTime[1]);
+                    }
+                  }
+                }
+              });
+            });
+            
+            suite.on('cycle', function(event) {
+              console.log(String(event.target));
+            });
+            
+            suite.on('complete', function() {
+              const fastest = this.filter('fastest').map('name');
+              console.log('Fastest is ' + fastest);
+            });
+            
+            suite.run({ async: true });
+          "
 
 
 
