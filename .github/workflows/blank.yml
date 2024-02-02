@@ -24,7 +24,7 @@ jobs:
       - name: Run Node Performance Test
         run: |
           node --version
-          npm --verison
+          npm --version
           node -e "
             const Benchmark = require('benchmark');
             const suite = new Benchmark.Suite();
