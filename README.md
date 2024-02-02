@@ -2,7 +2,7 @@
 Dockerfile
 
 
-
+```Dockerfile
 # Use the official Ubuntu base image as a starting point
 FROM ubuntu:latest
 
@@ -30,3 +30,4 @@ RUN node --version && npm --version
 # Your container's CMD or ENTRYPOINT here
 # For example, start a bash shell
 CMD [ "bash" ]
+```
