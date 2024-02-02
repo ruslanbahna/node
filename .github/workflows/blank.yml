@@ -38,23 +38,23 @@ jobs:
 
       - name: Run Node Performance Test
         run: |
-          echo 'Running synchronous Test 1...'
-          node -e "console.time('syncTest1'); for (let i = 0; i < 1000000; i++) { Math.sqrt(i); } console.timeEnd('syncTest1');"
+        echo 'Running synchronous Test 1...'
+        echo 'console.time("syncTest1"); for (let i = 0; i < 1000000; i++) { Math.sqrt(i); } console.timeEnd("syncTest1");' | node
 
-          echo 'Running asynchronous Test 1...'
-          node -e "console.time('asyncTest1'); setImmediate(() => { for (let i = 0; i < 1000000; i++) { Math.sqrt(i); } console.timeEnd('asyncTest1'); });"
+        echo 'Running asynchronous Test 1...'
+        echo 'console.time("asyncTest1"); setImmediate(() => { for (let i = 0; i < 1000000; i++) { Math.sqrt(i); } console.timeEnd("asyncTest1"); });' | node
 
-          echo 'Running synchronous Test 2...'
-          node -e "console.time('syncTest2'); for (let i = 0; i < 1000000; i++) { Math.pow(i, 2); } console.timeEnd('syncTest2');"
+        echo 'Running synchronous Test 2...'
+        echo 'console.time("syncTest2"); for (let i = 0; i < 1000000; i++) { Math.pow(i, 2); } console.timeEnd("syncTest2");' | node
 
-          echo 'Running asynchronous Test 2...'
-          node -e "console.time('asyncTest2'); setImmediate(() => { for (let i = 0; i < 1000000; i++) { Math.pow(i, 2); } console.timeEnd('asyncTest2'); });"
+        echo 'Running asynchronous Test 2...'
+        echo 'console.time("asyncTest2"); setImmediate(() => { for (let i = 0; i < 1000000; i++) { Math.pow(i, 2); } console.timeEnd("asyncTest2"); });' | node
 
-          echo 'Running synchronous Test 3...'
-          node -e "console.time('syncTest3'); for (let i = 0; i < 1000000; i++) { Math.log(i); } console.timeEnd('syncTest3');"
+        echo 'Running synchronous Test 3...'
+        echo 'console.time("syncTest3"); for (let i = 0; i < 1000000; i++) { Math.log(i); } console.timeEnd("syncTest3");' | node
 
-          echo 'Running asynchronous Test 3...'
-          node -e "console.time('asyncTest3'); setImmediate(() => { for (let i = 0; i < 1000000; i++) { Math.log(i); } console.timeEnd('asyncTest3'); });"
+        echo 'Running asynchronous Test 3...'
+        echo 'console.time("asyncTest3"); setImmediate(() => { for (let i = 0; i < 1000000; i++) { Math.log(i); } console.timeEnd("asyncTest3"); });' | node
 
   node-performance-alpine:
     runs-on: ubuntu-latest
