@@ -5,23 +5,47 @@ on:
     branches:
       - '*'
   workflow_dispatch:
+env:
+  my-script: |
+    const Benchmark = require('benchmark');
+    const suite = new Benchmark.Suite();
     
+    ['asyncTest1', 'syncTest2', 'asyncTest3', 'syncTest4', 'asyncTest5', 'syncTest6', 'asyncTest7', 'syncTest8', 'asyncTest9', 'syncTest10', 'asyncTest11', 'syncTest12', 'asyncTest13', 'syncTest14', 'asyncTest15', 'syncTest16', 'asyncTest17', 'syncTest18', 'asyncTest19', 'syncTest20', 'optimizedAsyncTest'].forEach(testName => {
+      suite.add(testName, {
+        defer: true,
+        fn: deferred => {
+          let completed = 0;
+          const startTime = process.hrtime();
+          
+          if (testName === 'optimizedAsyncTest') {
+            const array = new Float64Array(1000000);
+            for (let i = 0; i < 1000000; i++) {
+              array[i] = Math.sqrt(i);
+            }
+          } else {
+            for (let i = 0; i < 2000000; i++) {
+              if (testName.startsWith('async')) Math.sqrt(i);
+              else if (testName.startsWith('sync')) Math.pow(i, 2);
+            }
+          }
+          
+          const endTime = process.hrtime(startTime);
+          deferred.resolve(endTime[0] * 1e9 + endTime[1]);
+        }
+      });
+    });
+    
+    suite.on('cycle', function(event) {
+      console.log(String(event.target));
+    });
+    
+    suite.on('complete', function() {
+      const fastest = this.filter('fastest').map('name');
+      console.log('Fastest is ' + fastest);
+    });
+    
+    suite.run({ async: true });
 jobs:
-  python-performance-test:
-    runs-on: ubuntu-latest
-    container:
-      image: ubuntu:latest
-
-    steps:
-    - name: Install Python and Pip
-      run: |
-        apt-get update
-        apt-get install -y python3 python3-pip
-    - name: Install pyperformance
-      run: python3 -m pip install pyperformance
-    - name: Run PyPerformance
-      run: pyperformance run --affinity=1 --benchmarks=deepcopy
-
   node-performance-test:
     runs-on: ubuntu-latest
     container:
@@ -38,46 +62,8 @@ jobs:
 
       - name: Run Node Performance Test
         run: |
-          node -e "
-            const Benchmark = require('benchmark');
-            const suite = new Benchmark.Suite();
-            
-            ['asyncTest1', 'syncTest2', 'asyncTest3', 'syncTest4', 'asyncTest5', 'syncTest6', 'asyncTest7', 'syncTest8', 'asyncTest9', 'syncTest10', 'asyncTest11', 'syncTest12', 'asyncTest13', 'syncTest14', 'asyncTest15', 'syncTest16', 'asyncTest17', 'syncTest18', 'asyncTest19', 'syncTest20', 'optimizedAsyncTest'].forEach(testName => {
-              suite.add(testName, {
-                defer: true,
-                fn: deferred => {
-                  let completed = 0;
-                  const startTime = process.hrtime();
-                  
-                  if (testName === 'optimizedAsyncTest') {
-                    const array = new Float64Array(1000000);
-                    for (let i = 0; i < 1000000; i++) {
-                      array[i] = Math.sqrt(i);
-                    }
-                  } else {
-                    for (let i = 0; i < 2000000; i++) {
-                      if (testName.startsWith('async')) Math.sqrt(i);
-                      else if (testName.startsWith('sync')) Math.pow(i, 2);
-                    }
-                  }
-                  
-                  const endTime = process.hrtime(startTime);
-                  deferred.resolve(endTime[0] * 1e9 + endTime[1]);
-                }
-              });
-            });
-            
-            suite.on('cycle', function(event) {
-              console.log(String(event.target));
-            });
-            
-            suite.on('complete', function() {
-              const fastest = this.filter('fastest').map('name');
-              console.log('Fastest is ' + fastest);
-            });
-            
-            suite.run({ async: true });
-          "
+          echo ${{ my-script }} > script.js
+          node script.js
 
 
 
