@@ -15,15 +15,13 @@ jobs:
     steps:
       - name: Install NVM, Node.js, and NPM
         run: |
-          apt-get update
-          apt-get install -y curl
           curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.1/install.sh | bash
           export NVM_DIR="$HOME/.nvm"
-          [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
-          [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
-          nvm install node  # Install the latest version of Node.js
-          node --version
-          npm --version
+          [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
+          [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"
+          nvm install 21.6.1
+          echo "NVM_DIR=$NVM_DIR" >> $GITHUB_ENV
+          echo "PATH=$PATH:$NVM_DIR/versions/node/$(nvm version)/bin" >> $GITHUB_ENV
 
       - name: Install Benchmark.js
         run: npm install benchmark
