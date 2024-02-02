@@ -42,7 +42,7 @@ jobs:
             const Benchmark = require('benchmark');
             const suite = new Benchmark.Suite();
 
-            ['asyncTest1', 'syncTest2', 'asyncTest3', 'syncTest4', 'asyncTest5', 'syncTest6', 'asyncTest7', 'syncTest8', 'asyncTest9', 'syncTest10', 'asyncTest11', 'syncTest12', 'asyncTest13', 'syncTest14', 'asyncTest15', 'syncTest16', 'asyncTest17', 'syncTest18', 'asyncTest19', 'syncTest20', 'optimizedAsyncTest'].forEach(testName => {
+            ['asyncTest1', 'syncTest1', 'asyncTest2', 'syncTest2', 'asyncTest3', 'syncTest3', 'asyncTest4', 'syncTest4', 'asyncTest5', 'syncTest5', 'asyncTest6', 'syncTest6', 'asyncTest7', 'syncTest7', 'asyncTest8', 'syncTest8', 'asyncTest9', 'syncTest9', 'asyncTest10', 'syncTest10', 'asyncTest11', 'syncTest11', 'asyncTest12',, 'syncTest12',].forEach(testName => {
               suite.add(testName, {
                 defer: true,
                 fn: deferred => {
@@ -94,7 +94,7 @@ jobs:
             const Benchmark = require('benchmark');
             const suite = new Benchmark.Suite();
 
-            ['asyncTest1', 'syncTest2', 'asyncTest3', 'syncTest4', 'asyncTest5', 'syncTest6', 'asyncTest7', 'syncTest8', 'asyncTest9', 'syncTest10', 'asyncTest11', 'syncTest12', 'asyncTest13', 'syncTest14', 'asyncTest15', 'syncTest16', 'asyncTest17', 'syncTest18', 'asyncTest19', 'syncTest20', 'optimizedAsyncTest'].forEach(testName => {
+            ['asyncTest1', 'syncTest1', 'asyncTest2', 'syncTest2', 'asyncTest3', 'syncTest3', 'asyncTest4', 'syncTest4', 'asyncTest5', 'syncTest5', 'asyncTest6', 'syncTest6', 'asyncTest7', 'syncTest7', 'asyncTest8', 'syncTest8', 'asyncTest9', 'syncTest9', 'asyncTest10', 'syncTest10', 'asyncTest11', 'syncTest11', 'asyncTest12',, 'syncTest12',].forEach(testName => {
               suite.add(testName, {
                 defer: true,
                 fn: deferred => {
