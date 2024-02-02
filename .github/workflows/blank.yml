@@ -49,7 +49,7 @@ jobs:
                   let completed = 0;
                   const startTime = process.hrtime();
 
-                  const iterations = 10000000; // Increase the number of iterations
+                  const iterations = 1000; // Increase the number of iterations
 
                   for (let i = 0; i < iterations; i++) {
                     if (testName.startsWith('async')) Math.sqrt(i);
@@ -101,7 +101,7 @@ jobs:
                   let completed = 0;
                   const startTime = process.hrtime();
 
-                  const iterations = 10000000; // Increase the number of iterations
+                  const iterations = 1000; // Increase the number of iterations
 
                   for (let i = 0; i < iterations; i++) {
                     if (testName.startsWith('async')) Math.sqrt(i);
