@@ -46,12 +46,13 @@ jobs:
             suite.add('asyncTest1', {
               defer: true,
               fn: deferred => {
-                setImmediate(() => {
-                  for (let i = 0; i < 1000000; i++) {
-                    Math.sqrt(i);
+                let completed = 0;
+                for (let i = 0; i < 1000000; i++) {
+                  Math.sqrt(i);
+                  if (++completed === 1000000) {
+                    deferred.resolve();
                   }
-                  deferred.resolve();
-                });
+                }
               }
             });
 
@@ -98,12 +99,13 @@ jobs:
             suite.add('asyncTest3', {
               defer: true,
               fn: deferred => {
-                setImmediate(() => {
-                  for (let i = 0; i < 1000000; i++) {
-                    Math.log(i);
+                let completed = 0;
+                for (let i = 0; i < 1000000; i++) {
+                  Math.log(i);
+                  if (++completed === 1000000) {
+                    deferred.resolve();
                   }
-                  deferred.resolve();
-                });
+                }
               }
             });
 
