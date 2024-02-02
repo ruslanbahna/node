@@ -42,19 +42,18 @@ jobs:
             const Benchmark = require('benchmark');
             const suite = new Benchmark.Suite();
             
-            ['asyncTest1', 'syncTest2', 'asyncTest3'].forEach(testName => {
+            ['asyncTest1', 'syncTest2', 'asyncTest3', 'syncTest4', 'asyncTest5', 'syncTest6', 'asyncTest7', 'syncTest8', 'asyncTest9', 'syncTest10', 'asyncTest11', 'syncTest12', 'asyncTest13', 'syncTest14', 'asyncTest15', 'syncTest16', 'asyncTest17', 'syncTest18', 'asyncTest19', 'syncTest20'].forEach(testName => {
               suite.add(testName, {
                 defer: true,
                 fn: deferred => {
                   let completed = 0;
                   const startTime = process.hrtime();
                   
-                  for (let i = 0; i < 1000000; i++) {
-                    if (testName === 'asyncTest1') Math.sqrt(i);
-                    else if (testName === 'syncTest2') Math.pow(i, 2);
-                    else if (testName === 'asyncTest3') Math.log(i);
+                  for (let i = 0; i < 2000000; i++) {
+                    if (testName.startsWith('async')) Math.sqrt(i);
+                    else if (testName.startsWith('sync')) Math.pow(i, 2);
                     
-                    if (++completed === 1000000) {
+                    if (++completed === 2000000) {
                       const endTime = process.hrtime(startTime);
                       deferred.resolve(endTime[0] * 1e9 + endTime[1]);
                     }
