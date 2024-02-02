@@ -38,14 +38,44 @@ jobs:
 
       - name: Run Node Performance Test
         run: |
-          echo 'Running synchronous Test 1...'
+          echo 'Running asynchronous Test 1...'
           node -e "
             const Benchmark = require('benchmark');
             const suite = new Benchmark.Suite();
 
-            suite.add('syncTest1', function() {
-              for (let i = 0; i < 1000000; i++) {
-                Math.sqrt(i);
+            suite.add('asyncTest1', {
+              defer: true,
+              fn: deferred => {
+                setImmediate(() => {
+                  for (let i = 0; i < 1000000; i++) {
+                    Math.sqrt(i);
+                  }
+                  deferred.resolve();
+                });
+              }
+            });
+
+            suite.on('cycle', function(event) {
+              console.log(String(event.target));
+            });
+
+            suite.on('complete', function() {
+              console.log('Fastest is ' + this.filter('fastest').map('name'));
+            });
+
+            suite.run({ async: true });
+          "
+
+          echo 'Running synchronous Test 2...'
+          node -e "
+            const Benchmark = require('benchmark');
+            const suite = new Benchmark.Suite();
+
+            suite.add('syncTest2', {
+              fn: function() {
+                for (let i = 0; i < 1000000; i++) {
+                  Math.pow(i, 2);
+                }
               }
             });
 
@@ -60,14 +90,20 @@ jobs:
             suite.run();
           "
 
-          echo 'Running synchronous Test 2...'
+          echo 'Running asynchronous Test 3...'
           node -e "
             const Benchmark = require('benchmark');
             const suite = new Benchmark.Suite();
 
-            suite.add('syncTest2', function() {
-              for (let i = 0; i < 1000000; i++) {
-                Math.pow(i, 2);
+            suite.add('asyncTest3', {
+              defer: true,
+              fn: deferred => {
+                setImmediate(() => {
+                  for (let i = 0; i < 1000000; i++) {
+                    Math.log(i);
+                  }
+                  deferred.resolve();
+                });
               }
             });
 
@@ -79,7 +115,7 @@ jobs:
               console.log('Fastest is ' + this.filter('fastest').map('name'));
             });
 
-            suite.run();
+            suite.run({ async: true });
           "
 
   node-performance-alpine:
