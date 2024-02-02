@@ -38,8 +38,10 @@ jobs:
 
       - name: Run Node Performance Test
         run: |
+          totalExecutionTime=0
+
           echo 'Running asynchronous Test 1...'
-          node -e "
+          asyncTest1ExecutionTime=$(node -e "
             const Benchmark = require('benchmark');
             const suite = new Benchmark.Suite();
 
@@ -47,10 +49,13 @@ jobs:
               defer: true,
               fn: deferred => {
                 let completed = 0;
+                const startTime = process.hrtime();
+
                 for (let i = 0; i < 1000000; i++) {
                   Math.sqrt(i);
                   if (++completed === 1000000) {
-                    deferred.resolve();
+                    const endTime = process.hrtime(startTime);
+                    deferred.resolve(endTime[0] * 1e9 + endTime[1]);
                   }
                 }
               }
@@ -61,22 +66,30 @@ jobs:
             });
 
             suite.on('complete', function() {
-              console.log('Fastest is ' + this.filter('fastest').map('name'));
+              const fastest = this.filter('fastest').map('name');
+              console.log('Fastest is ' + fastest);
             });
 
             suite.run({ async: true });
-          "
+          ")
+
+          totalExecutionTime=$((totalExecutionTime + asyncTest1ExecutionTime))
 
           echo 'Running synchronous Test 2...'
-          node -e "
+          syncTest2ExecutionTime=$(node -e "
             const Benchmark = require('benchmark');
             const suite = new Benchmark.Suite();
 
             suite.add('syncTest2', {
               fn: function() {
+                const startTime = process.hrtime();
+
                 for (let i = 0; i < 1000000; i++) {
                   Math.pow(i, 2);
                 }
+
+                const endTime = process.hrtime(startTime);
+                console.log('syncTest2 Execution Time: ' + (endTime[0] * 1e9 + endTime[1]) + ' nanoseconds');
               }
             });
 
@@ -85,14 +98,17 @@ jobs:
             });
 
             suite.on('complete', function() {
-              console.log('Fastest is ' + this.filter('fastest').map('name'));
+              const fastest = this.filter('fastest').map('name');
+              console.log('Fastest is ' + fastest);
             });
 
             suite.run();
-          "
+          ")
+
+          totalExecutionTime=$((totalExecutionTime + syncTest2ExecutionTime))
 
           echo 'Running asynchronous Test 3...'
-          node -e "
+          asyncTest3ExecutionTime=$(node -e "
             const Benchmark = require('benchmark');
             const suite = new Benchmark.Suite();
 
@@ -100,10 +116,13 @@ jobs:
               defer: true,
               fn: deferred => {
                 let completed = 0;
+                const startTime = process.hrtime();
+
                 for (let i = 0; i < 1000000; i++) {
                   Math.log(i);
                   if (++completed === 1000000) {
-                    deferred.resolve();
+                    const endTime = process.hrtime(startTime);
+                    deferred.resolve(endTime[0] * 1e9 + endTime[1]);
                   }
                 }
               }
@@ -114,11 +133,16 @@ jobs:
             });
 
             suite.on('complete', function() {
-              console.log('Fastest is ' + this.filter('fastest').map('name'));
+              const fastest = this.filter('fastest').map('name');
+              console.log('Fastest is ' + fastest);
             });
 
             suite.run({ async: true });
-          "
+          ")
+
+          totalExecutionTime=$((totalExecutionTime + asyncTest3ExecutionTime))
+
+          echo "Total Execution Time for All Tests: $totalExecutionTime nanoseconds"
 
   node-performance-alpine:
     runs-on: ubuntu-latest
