@@ -40,6 +40,20 @@ jobs:
         run: |
           echo "const Benchmark = require('benchmark');" >> benchmark-test.js
           echo "const suite = new Benchmark.Suite;" >> benchmark-test.js
+          
+          echo "function fibSync(n) {" >> benchmark-test.js
+          echo "  if (n < 2) return n;" >> benchmark-test.js
+          echo "  return fibSync(n - 1) + fibSync(n - 2);" >> benchmark-test.js
+          echo "}" >> benchmark-test.js
+
+          echo "function fibAsync(n) {" >> benchmark-test.js
+          echo "  return new Promise(resolve => {" >> benchmark-test.js
+          echo "    if (n < 2) resolve(n);" >> benchmark-test.js
+          echo "    resolve(fibAsync(n - 1) + fibAsync(n - 2));" >> benchmark-test.js
+          echo "  });" >> benchmark-test.js
+          echo "}" >> benchmark-test.js
+          echo "const Benchmark = require('benchmark');" >> benchmark-test.js
+          echo "const suite = new Benchmark.Suite;" >> benchmark-test.js
           echo "suite.add('RegExp#test', function() {" >> benchmark-test.js
           echo "  /o/.test('Hello World!');" >> benchmark-test.js
           echo "})" >> benchmark-test.js
