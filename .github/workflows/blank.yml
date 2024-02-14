@@ -506,7 +506,7 @@ jobs:
               });
             }
           "
-  node-performance-test-alpine:
+  node-performance-test-alpine-node:
     runs-on: ubuntu-latest
     container:
       image: node:alpine
