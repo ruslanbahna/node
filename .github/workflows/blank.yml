@@ -131,12 +131,6 @@ jobs:
           "
 name: node-performance-test-photon
 
-on:
-  push:
-    branches:
-      - '*'
-  workflow_dispatch:
-
 jobs:
   node-performance-test:
     runs-on: ubuntu-latest
