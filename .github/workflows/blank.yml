@@ -626,6 +626,7 @@ jobs:
     steps:
       - name: Install update
         run: |
+          curl -sL https://packages.microsoft.com/keys/microsoft.asc | gpg --import -
           tdnf check-update 
           npm install -g yarn
 
