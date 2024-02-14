@@ -374,7 +374,7 @@ jobs:
       - name: Install curl
         run: |
           apt-get update
-          apt-get install -y curl bc --no-install-recommends
+          apt-get install -y curl bc 
 
       - name: Capture pre-installation package state
         run: dpkg-query -W --showformat='${Installed-Size}\t${Package}\n' > /tmp/pre_install_packages.txt
