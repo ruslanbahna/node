@@ -36,6 +36,11 @@ jobs:
             const totalStartTime = Date.now();
 
             suite
+              .add('Async Operation Example', {
+              defer: true,
+              fn: function(deferred) {
+                asyncOperation().then(() => deferred.resolve());
+              })
               .add('Fibonacci Recursive', function() {
                 const fib = (n) => n < 2 ? n : fib(n - 1) + fib(n - 2);
                 fib(30);
@@ -66,12 +71,6 @@ jobs:
               })
               .add('Math Operations', function() {
                 for (let i = 0; i < 10; i++) Math.sqrt(i);
-              })
-              .add('Async Operation', {
-              defer: true,
-              fn: function(deferred) {
-                asyncOperation().then(() => deferred.resolve());
-              }
               })
               .on('cycle', event => console.log(String(event.target)))
               .on('complete', function() {
