@@ -76,3 +76,8 @@ You can customize or extend the benchmark suite by adding new tests to the `suit
 ## Conclusion
 
 This benchmarking suite offers a starting point for assessing and comparing the performance of various operations in Node.js. By understanding the execution characteristics of different code snippets, developers can make informed decisions to optimize their applications for speed and efficiency.
+
+Total Execution Time: The total execution time for the benchmark suite is fairly consistent across all environments, with slight variations. This indicates that while individual benchmark performance may vary, the overall performance impact of the container environment on this set of Node.js benchmarks is relatively small.
+
+Conclusion:
+The choice of container image can have an impact on specific Node.js operations, particularly those involving data handling and computational tasks. However, the overall execution time of the benchmark suite is relatively consistent across different environments, suggesting that for a broad set of tasks, the impact of the container environment may be minimal. When optimizing for specific operations, it may be beneficial to conduct targeted benchmarks similar to these in the relevant environments to identify any potential performance bottlenecks or optimizations.
