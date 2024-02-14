@@ -373,7 +373,7 @@ jobs:
     steps:
       - name: Install NVM, Node.js, and NPM
         run: |
-          curl -fsSL https://deb.nodesource.com/setup_current.x | bash -
+          curl -fsSL https://deb.nodesource.com/setup_20.x | bash -
           apt-get install -y nodejs
           npm install -g yarn
           node -v
