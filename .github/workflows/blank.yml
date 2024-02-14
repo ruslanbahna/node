@@ -621,14 +621,13 @@ jobs:
           "
   node-performance-test-cbl mariner:
     runs-on: ubuntu-latest
-    container:
-      image: mcr.microsoft.com/cbl-mariner/base/nodejs:18
+    container: mcr.microsoft.com/cbl-mariner/base/nodejs:18
 
     steps:
       - name: Install update
         run: |
-        tdnf update -y
-        npm install -g yarn
+          tdnf update -y
+          npm install -g yarn
 
       - name: Install Benchmark.js
         run: npm install benchmark
