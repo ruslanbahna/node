@@ -515,9 +515,6 @@ jobs:
       - name: Install bash (optional)
         run: apk update && apk add --no-cache bash
 
-      - name: Install Yarn
-        run: npm install -g yarn
-
       - name: Install Benchmark.js
         run: npm install benchmark
 
