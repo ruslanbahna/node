@@ -37,10 +37,11 @@ jobs:
 
             suite
               .add('Async Operation Example', {
-              defer: true,
-              fn: function(deferred) {
-                asyncOperation().then(() => deferred.resolve());
-              })
+                defer: true,
+                fn: function(deferred) {
+                  asyncOperation().then(() => deferred.resolve());
+                }
+              }) // Corrected: Closing parenthesis for the 'add' method for the asynchronous test
               .add('Fibonacci Recursive', function() {
                 const fib = (n) => n < 2 ? n : fib(n - 1) + fib(n - 2);
                 fib(30);
@@ -67,7 +68,7 @@ jobs:
               })
               .add('RegExp Matching', function() {
                 const str = 'hello world';
-                /o/.test(str); // Escaped slashes
+                /o/.test(str); // Correct use of RegExp
               })
               .add('Math Operations', function() {
                 for (let i = 0; i < 10; i++) Math.sqrt(i);
@@ -81,6 +82,11 @@ jobs:
               .run({ async: true });
 
             console.log('Benchmark test started...');
+
+            // Simulated asynchronous operation
+            function asyncOperation() {
+              return new Promise(resolve => setTimeout(resolve, 100)); // Simulates a 100ms asynchronous task
+            }
           "
           node -e "
             const Benchmark = require('benchmark');
