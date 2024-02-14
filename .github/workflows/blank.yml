@@ -142,6 +142,7 @@ jobs:
           tdnf update --allowerasing --assumeyes
           tdnf --setopt=tsflags=nodocs --allowerasing --assumeyes install nodejs
           npm install -g yarn
+          tdnf list installed | grep nodejs
 
       - name: Install Benchmark.js
         run: npm install benchmark
