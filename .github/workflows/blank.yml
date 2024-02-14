@@ -256,7 +256,7 @@ jobs:
       - name: install bash
         run: |
           apk update && apk add --update bash
-          apk add --update nodejs
+          apk add --update nodejs npm
           npm install -g yarn
   
       - name: Install Benchmark.js
