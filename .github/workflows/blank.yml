@@ -626,7 +626,7 @@ jobs:
     steps:
       - name: Install update
         run: |
-          tdnf update -y
+          tdnf check-update 
           npm install -g yarn
 
       - name: Install Benchmark.js
