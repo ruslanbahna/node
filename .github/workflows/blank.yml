@@ -7,7 +7,7 @@ on:
   workflow_dispatch:
 
 jobs:
-  node-performance-test:
+  node-performance-test-ubuntu:
     runs-on: ubuntu-latest
     container:
       image: ubuntu:latest
@@ -129,10 +129,8 @@ jobs:
               });
             }
           "
-name: node-performance-test-photon
 
-jobs:
-  node-performance-test:
+  node-performance-test-photon:
     runs-on: ubuntu-latest
     container:
       image: photon:latest
