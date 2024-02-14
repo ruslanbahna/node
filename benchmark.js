@@ -1,33 +1,45 @@
 const Benchmark = require('benchmark');
-
 const suite = new Benchmark.Suite();
-
-function fibonacci(n) {
-  if (n <= 1) {
-    return n;
-  }
-  return fibonacci(n - 1) + fibonacci(n - 2);
-}
-
-function factorial(n) {
-  let result = 1;
-  for (let i = 1; i <= n; i++) {
-    result *= i;
-  }
-  return result;
-}
+const totalStartTime = Date.now();
 
 suite
-  .add('Test Case 1', () => {
-    const result = fibonacci(20); // Calculate Fibonacci number at index 20
+  .add('Fibonacci Recursive', function() {
+    const fib = (n) => n < 2 ? n : fib(n - 1) + fib(n - 2);
+    fib(30);
   })
-  .add('Test Case 2', () => {
-    const result = factorial(10); // Calculate factorial of 10
+  .add('Array Sorting', function() {
+    const arr = Array.from({ length: 10 }, () => Math.random());
+    arr.sort((a, b) => a - b);
   })
-  .on('cycle', (event) => {
-    console.log(String(event.target));
+  .add('String Manipulation', function() {
+    let str = '';
+    for (let i = 0; i < 10; i++) str += 'a';
   })
-  .on('complete', () => {
-    console.log('Benchmark completed.');
+  .add('Map Operations', function() {
+    const map = new Map();
+    for (let i = 0; i < 10; i++) map.set(i, i * i);
+  })
+  .add('Set Operations', function() {
+    const set = new Set();
+    for (let i = 0; i < 10; i++) set.add(i);
+  })
+  .add('JSON Parsing', function() {
+    const json = JSON.stringify(Array.from({ length: 10 }, (_, i) => ({ num: i })));
+    JSON.parse(json);
+  })
+  .add('RegExp Matching', function() {
+    const str = 'hello world';
+    /o/.test(str);
+  })
+  .add('Math Operations', function() {
+    for (let i = 0; i < 10; i++) Math.sqrt(i);
+  })
+  .on('cycle', event => console.log(String(event.target)))
+  .on('complete', function() {
+    console.log('All tasks completed. Fastest is ' + this.filter('fastest').map('name'));
+    const totalEndTime = Date.now();
+    console.log('Total execution time: ' + (totalEndTime - totalStartTime) + ' ms');
   })
   .run({ async: true });
+
+console.log("Benchmark test started...");
