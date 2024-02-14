@@ -62,7 +62,7 @@ jobs:
               })
               .add('RegExp Matching', function() {
                 const str = 'hello world';
-                /o/.test(str);
+                /o/.test(str); // Escaped slashes
               })
               .add('Math Operations', function() {
                 for (let i = 0; i < 10; i++) Math.sqrt(i);
@@ -75,7 +75,7 @@ jobs:
               })
               .run({ async: true });
 
-            console.log("Benchmark test started...");
+            console.log('Benchmark test started...');
           "
 
 
