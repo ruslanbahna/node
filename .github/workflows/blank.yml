@@ -90,41 +90,96 @@ jobs:
           "
           node -e "
             const Benchmark = require('benchmark');
+            const fs = require('fs').promises; // Require the Promise-based file system module
             const suite = new Benchmark.Suite();
             const totalStartTime = Date.now();
 
-            // Asynchronous test example
-            suite.add('Async Operation Example', {
-              defer: true,
-              fn: function(deferred) {
-                asyncOperation().then(() => deferred.resolve());
-              }
-            })
-
-            // Your existing synchronous tests
-            .add('Fibonacci Recursive', function() {
-              const fib = (n) => n < 2 ? n : fib(n - 1) + fib(n - 2);
-              fib(30);
-            })
-            .add('Array Sorting', function() {
-              const arr = Array.from({ length: 10 }, () => Math.random());
-              arr.sort((a, b) => a - b);
-            })
-            // Add more of your existing tests here...
-
-            .on('cycle', event => console.log(String(event.target)))
-            .on('complete', function() {
-              console.log('All tasks completed. Fastest is ' + this.filter('fastest').map('name'));
-              const totalEndTime = Date.now();
-              console.log('Total execution time: ' + (totalEndTime - totalStartTime) + ' ms');
-            })
-            .run({ async: true });
+            suite
+              .add('Async Operation Example', {
+                defer: true,
+                fn: function(deferred) {
+                  asyncOperation().then(() => deferred.resolve());
+                }
+              })
+              .add('Async File Read', { // Asynchronous file read operation
+                defer: true,
+                fn: function(deferred) {
+                  fs.readFile(__filename) // Read the current file
+                    .then(() => deferred.resolve())
+                    .catch(console.error);
+                }
+              })
+              .add('Async Delayed Computation', { // Asynchronous delayed computation
+                defer: true,
+                fn: function(deferred) {
+                  delayedComputation()
+                    .then(() => deferred.resolve())
+                    .catch(console.error);
+                }
+              })
+              .add('Array Sorting', function() {
+                const arr = Array.from({ length: 10 }, () => Math.random());
+                arr.sort((a, b) => a - b);
+              })
+              .add('String Manipulation', function() {
+                let str = '';
+                for (let i = 0; i < 10; i++) str += 'a';
+              })
+              .add('Map Operations', function() {
+                const map = new Map();
+                for (let i = 0; i < 10; i++) map.set(i, i * i);
+              })
+              .add('Set Operations', function() {
+                const set = new Set();
+                for (let i = 0; i < 10; i++) set.add(i);
+              })
+              .add('JSON Parsing', function() {
+                const json = JSON.stringify(Array.from({ length: 10 }, (_, i) => ({ num: i })));
+                JSON.parse(json);
+              })
+              .add('RegExp Matching', function() {
+                const str = 'hello world';
+                /o/.test(str); // Correct use of RegExp
+              })
+              .add('Math Operations', function() {
+                for (let i = 0; i < 10; i++) Math.sqrt(i);
+              })
+              .add('Fibonacci Recursive', function() {
+                const fib = (n) => n < 2 ? n : fib(n - 1) + fib(n - 2);
+                fib(30);
+              })
+              .on('cycle', event => console.log(String(event.target)))
+              .on('complete', function() {
+                console.log('All tasks completed. Fastest is ' + this.filter('fastest').map('name'));
+                const totalEndTime = Date.now();
+                console.log('Total execution time: ' + (totalEndTime - totalStartTime) + ' ms');
+              })
+              .run({ async: true });
 
             console.log('Benchmark test started...');
 
-            // Simulated asynchronous operation
+            // Original simulated asynchronous operation
             function asyncOperation() {
               return new Promise(resolve => setTimeout(resolve, 100)); // Simulates a 100ms asynchronous task
+            }
+
+            // New async file read operation
+            function asyncFileRead() {
+              return fs.readFile(__filename); // Reads the current file asynchronously
+            }
+
+            // New async delayed computation
+            function delayedComputation() {
+              return new Promise(resolve => {
+                setTimeout(() => {
+                  // Simulate some computation
+                  let sum = 0;
+                  for (let i = 0; i < 1000000; i++) {
+                    sum += i;
+                  }
+                  resolve(sum);
+                }, 100); // Delay of 100ms
+              });
             }
           "
 
