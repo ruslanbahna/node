@@ -365,7 +365,6 @@ jobs:
               });
             }
           "
-jobs:
   node-performance-test-ubuntu-with-package:
     runs-on: ubuntu-latest
     container:
