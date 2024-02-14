@@ -258,6 +258,7 @@ jobs:
           apk update && apk add --update bash
           apk add --update nodejs npm
           npm install -g yarn
+          apk info -s
   
       - name: Install Benchmark.js
         run: npm install benchmark
