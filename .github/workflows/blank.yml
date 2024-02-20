@@ -159,7 +159,7 @@ jobs:
           tdnf update --allowerasing --assumeyes
           tdnf --setopt=tsflags=nodocs --allowerasing --assumeyes install nodejs
           npm install -g yarn
-          dpkg-query -W --showformat='${Installed-Size}\t${Package}\n' | grep nodejs
+          rpm -q --queryformat '%{SIZE}\t%{NAME}\n' nodejs
 
 
       - name: Install Benchmark.js
