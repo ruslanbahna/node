@@ -27,7 +27,13 @@ jobs:
 
       - name: Output Package Size
         run: |
-          dpkg-query -Wf '${Installed-Size}\t${Package}\n' | sort -n
+          packages_info=$(dpkg-query -Wf '${Installed-Size}\t${Package}\n')
+          total_size=$(echo "$packages_info" | awk '{total+=$1} END{print total}')
+          num_packages=$(echo "$packages_info" | wc -l)
+          echo "Total installed package size: $total_size KB"
+          echo "Number of installed packages: $num_packages"
+          echo "Individual package sizes:"
+          echo "$packages_info" | sort -n
 
       - name: Install Benchmark.js
         run: npm install benchmark
