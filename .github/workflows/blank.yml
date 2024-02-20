@@ -15,7 +15,7 @@ jobs:
     steps:
       - name: Install NVM, Node.js, and NPM 
         run: |
-          apt-get update && apt-get install -y curl
+          apt-get update && apt-get install -y curl dpkg
           curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.1/install.sh | bash
           export NVM_DIR="$HOME/.nvm"
           [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
@@ -24,6 +24,10 @@ jobs:
           echo "NVM_DIR=$NVM_DIR" >> $GITHUB_ENV
           echo "PATH=$PATH:$NVM_DIR/versions/node/$(nvm version)/bin" >> $GITHUB_ENV
         shell: bash
+
+      - name: Output Package Size
+        run: |
+          dpkg-query -Wf '${Installed-Size}\t${Package}\n' | sort -n
 
       - name: Install Benchmark.js
         run: npm install benchmark
