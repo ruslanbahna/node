@@ -81,3 +81,17 @@ Total Execution Time: The total execution time for the benchmark suite is fairly
 
 Conclusion:
 The choice of container image can have an impact on specific Node.js operations, particularly those involving data handling and computational tasks. However, the overall execution time of the benchmark suite is relatively consistent across different environments, suggesting that for a broad set of tasks, the impact of the container environment may be minimal. When optimizing for specific operations, it may be beneficial to conduct targeted benchmarks similar to these in the relevant environments to identify any potential performance bottlenecks or optimizations.
+
+
+
+Based on the article, Alpine Linux, with its musl libc, initially seems ideal for containerized environments due to its small size. However, significant performance drawbacks in multithreading contexts were observed, making it less suitable for applications requiring high concurrency. While Alpine offers a compact and efficient base, these issues suggest careful consideration of specific use cases. For high-performance, multi-threaded applications, exploring alternatives or using mimalloc with Alpine might mitigate some concerns, balancing Alpine's size advantages with the need for efficiency.
+
+
+The article suggests Alpine Linux is great for its small size, but has problems with tasks that do many things at once, making it slow for some apps. It's good for simple jobs but for complex ones, you might need a workaround or a different choice.
+
+take this conclusion and also results from ptoton and alpine and do a general conclusion why we selected photon to harden aour image for future uses
+Considering the article's insights on Alpine's multithreading limitations and our benchmark results, we've chosen Photon to harden our image for future use. Photon showed better performance in key areas, aligning with our need for a robust and efficient environment for complex applications.
+
+
+
+
