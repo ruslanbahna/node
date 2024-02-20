@@ -28,12 +28,13 @@ jobs:
       - name: Output Package Size
         run: |
           packages_info=$(dpkg-query -Wf '${Installed-Size}\t${Package}\n')
-          total_size=$(echo "$packages_info" | awk '{total+=$1} END{print total}')
+          total_size_kb=$(echo "$packages_info" | awk '{total+=$1} END{print total}')
+          total_size_mb=$(awk "BEGIN {print $total_size_kb / 1024}")
           num_packages=$(echo "$packages_info" | wc -l)
-          echo "Total installed package size: $total_size KB"
+          echo "Total installed package size: $total_size_mb MB"
           echo "Number of installed packages: $num_packages"
-          echo "Individual package sizes:"
-          echo "$packages_info" | sort -n
+          echo "Individual package sizes (in MB):"
+          echo "$packages_info" | awk '{printf "%.2f MB %s\n", $1/1024, $2}' | sort -n
 
       - name: Install Benchmark.js
         run: npm install benchmark
