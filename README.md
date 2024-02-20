@@ -94,4 +94,43 @@ Considering the article's insights on Alpine's multithreading limitations and ou
 
 
 
+```yaml
+  node-performance-test-ubuntu-with-package:
+    runs-on: ubuntu-latest
+    container:
+      image: ubuntu:latest
+
+    steps:
+      - name: Install curl
+        run: |
+          apt-get update
+          apt-get install -y curl bc 
+
+      - name: Capture pre-installation package state
+        run: dpkg-query -W --showformat='${Installed-Size}\t${Package}\n' > /tmp/pre_install_packages.txt
+
+
+      - name: Setup Node.js and Install Packages
+        run: |
+          curl -fsSL https://deb.nodesource.com/setup_20.x | bash -
+          apt-get install -y nodejs
+          npm install -g yarn
+ 
+
+      - name: Capture post-installation package state
+        run: dpkg-query -W --showformat='${Installed-Size}\t${Package}\n' > /tmp/post_install_packages.txt
+ 
+
+      - name: Compare package states and calculate total size
+        run: |
+          echo "Newly installed packages and their sizes (in KB):"
+          grep -vxFf /tmp/pre_install_packages.txt /tmp/post_install_packages.txt
+          total_size_kb=$(grep -vxFf /tmp/pre_install_packages.txt /tmp/post_install_packages.txt | awk '{s+=$1} END {print s}')
+          echo "Total size of newly installed packages: ${total_size_kb} KB"
+          total_size_mb=$(echo "scale=2; ${total_size_kb} / 1024" | bc)
+          echo "Total size of newly installed packages: ${total_size_mb} MB"
+          ```
+
+
+
 
