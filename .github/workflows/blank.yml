@@ -13,7 +13,7 @@ jobs:
       image: ubuntu:latest
 
     steps:
-      - name: Install NVM, Node.js, and NPM
+      - name: Install NVM, Node.js, and NPM 
         run: |
           apt-get update && apt-get install -y curl
           curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.1/install.sh | bash
