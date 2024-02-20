@@ -130,6 +130,21 @@ Considering the article's insights on Alpine's multithreading limitations and ou
           total_size_mb=$(echo "scale=2; ${total_size_kb} / 1024" | bc)
           echo "Total size of newly installed packages: ${total_size_mb} MB"
           ```
+| Task                        | ubuntu:latest       | photon:latest       |
+|-----------------------------|---------------------|---------------------|
+| Async Operation Example     | 9.97 ops/sec       | 9.98 ops/sec       |
+| Simulated Async File Read   | 19.91 ops/sec      | 19.93 ops/sec      |
+| Async Delayed Computation   | 9.86 ops/sec       | 9.87 ops/sec       |
+| Fibonacci Recursive         | 63.39 ops/sec      | 63.71 ops/sec      |
+| Array Sorting               | 618,632 ops/sec    | 600,693 ops/sec    |
+| String Manipulation         | 11,712,551 ops/sec | 11,691,481 ops/sec |
+| Map Operations              | 3,215,043 ops/sec  | 3,116,709 ops/sec  |
+| Set Operations              | 3,612,585 ops/sec  | 3,545,749 ops/sec  |
+| JSON Parsing                | 266,988 ops/sec    | 267,321 ops/sec    |
+| RegExp Matching             | 55,421,845 ops/sec | 55,927,758 ops/sec |
+| Math Operations             | 165,080,439 ops/sec| 165,029,590 ops/sec|
+| Total execution time        | 65120 ms            | 64265 ms            |
+
 
 
 
