@@ -159,7 +159,7 @@ jobs:
           tdnf update --allowerasing --assumeyes
           tdnf --setopt=tsflags=nodocs --allowerasing --assumeyes install nodejs
           npm install -g yarn
-          tdnf list installed | awk '{print $1}' | xargs rpm -qil | grep -e "^Size" | awk '{sum+=$3} END {print "Total package size: " sum / 1024 " MB"}'
+          tdnf list installed | awk '{print $1}' | xargs tdnf info | grep Size
 
       - name: Install Benchmark.js
         run: npm install benchmark
