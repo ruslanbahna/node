@@ -15,7 +15,9 @@ jobs:
     steps:
       - name: Install NVM, Node.js, and NPM 
         run: |
-          apt-get update && apt-get install -y curl dpkg
+          apt-get update
+          dpkg-query -W --showformat='${Installed-Size}\t${Package}\n' > /tmp/pre_install_packages.txt
+          apt-get install -y curl
           curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.1/install.sh | bash
           export NVM_DIR="$HOME/.nvm"
           [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
@@ -25,16 +27,17 @@ jobs:
           echo "PATH=$PATH:$NVM_DIR/versions/node/$(nvm version)/bin" >> $GITHUB_ENV
         shell: bash
 
-      - name: Output Package Size
+      - name: Capture post-installation package state
+        run: dpkg-query -W --showformat='${Installed-Size}\t${Package}\n' > /tmp/post_install_packages.txt
+ 
+      - name: Compare package states and calculate total size
         run: |
-          packages_info=$(dpkg-query -Wf '${Installed-Size}\t${Package}\n')
-          total_size_kb=$(echo "$packages_info" | awk '{total+=$1} END{print total}')
-          total_size_mb=$(awk "BEGIN {print $total_size_kb / 1024}")
-          num_packages=$(echo "$packages_info" | wc -l)
-          echo "Total installed package size: $total_size_mb MB"
-          echo "Number of installed packages: $num_packages"
-          echo "Individual package sizes (in MB):"
-          echo "$packages_info" | awk '{printf "%.2f MB %s\n", $1/1024, $2}' | sort -n
+          echo "Newly installed packages and their sizes (in KB):"
+          grep -vxFf /tmp/pre_install_packages.txt /tmp/post_install_packages.txt
+          total_size_kb=$(grep -vxFf /tmp/pre_install_packages.txt /tmp/post_install_packages.txt | awk '{s+=$1} END {print s}')
+          echo "Total size of newly installed packages: ${total_size_kb} KB"
+          total_size_mb=$(echo "scale=2; ${total_size_kb} / 1024" | bc)
+          echo "Total size of newly installed packages: ${total_size_mb} MB"
 
       - name: Install Benchmark.js
         run: npm install benchmark
