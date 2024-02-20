@@ -159,11 +159,6 @@ jobs:
           tdnf update --allowerasing --assumeyes
           tdnf --setopt=tsflags=nodocs --allowerasing --assumeyes install nodejs
           npm install -g yarn
-      - name: Get nodejs package size
-        run: |
-          INSTALL_LOG="/var/log/tdnf.log"
-          NODEJS_SIZE=$(grep "nodejs-" $INSTALL_LOG | awk '{print $7}')
-          echo "Node.js package size: $NODEJS_SIZE"
 
 
       - name: Install Benchmark.js
