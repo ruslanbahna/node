@@ -13,10 +13,12 @@ jobs:
       image: ubuntu:latest
 
     steps:
+      - name: Capture pre-installation package state
+        run: dpkg-query -W --showformat='${Installed-Size}\t${Package}\n' > /tmp/pre_install_packages.txt
+
       - name: Install NVM, Node.js, and NPM 
         run: |
           apt-get update
-          dpkg-query -W --showformat='${Installed-Size}\t${Package}\n' > /tmp/pre_install_packages.txt
           apt-get install -y curl bc
           curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.1/install.sh | bash
           export NVM_DIR="$HOME/.nvm"
@@ -38,6 +40,7 @@ jobs:
           echo "Total size of newly installed packages: ${total_size_kb} KB"
           total_size_mb=$(echo "scale=2; ${total_size_kb} / 1024" | bc)
           echo "Total size of newly installed packages: ${total_size_mb} MB"
+
 
       - name: Install Benchmark.js
         run: npm install benchmark
