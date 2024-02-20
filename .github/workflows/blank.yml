@@ -17,7 +17,7 @@ jobs:
         run: |
           apt-get update
           dpkg-query -W --showformat='${Installed-Size}\t${Package}\n' > /tmp/pre_install_packages.txt
-          apt-get install -y curl
+          apt-get install -y curl bc
           curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.1/install.sh | bash
           export NVM_DIR="$HOME/.nvm"
           [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
